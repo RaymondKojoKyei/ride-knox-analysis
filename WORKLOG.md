@@ -169,4 +169,79 @@ f53dff0 Add Ride Knox analysis report
 **Q3:** After the change has been committed, `git diff report.md` would show no output because there would be no uncommitted differences between the working copy and the latest commit.
 
 
-### Testing staged recovery for Part 4B
+## Part 4
+
+### TODO 4a — Restore an unstaged mistake
+
+I deleted a paragraph from `report.md` and checked the status:
+
+```text
+On branch main
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   report.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+I restored the last committed version with:
+
+```text
+git restore report.md
+```
+
+After restoring the file:
+
+```text
+On branch main
+nothing to commit, working tree clean
+```
+
+### TODO 4b — Unstage one file
+
+I temporarily edited both `WORKLOG.md` and `analysis.ipynb`, then staged both files.
+
+I unstaged only `analysis.ipynb` with:
+
+```text
+git restore --staged analysis.ipynb
+```
+
+The resulting status showed one staged file and one unstaged file:
+
+```text
+On branch main
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        modified:   WORKLOG.md
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   analysis.ipynb
+```
+
+I committed only `WORKLOG.md` and then restored the temporary change in `analysis.ipynb`.
+
+### TODO 4c — Revert a committed mistake
+
+I deliberately added a false statement to `report.md` and committed it with the required message:
+
+```text
+Add exaggerated claim (on purpose, for Part 4)
+```
+
+I then safely reversed that commit using `git revert`.
+
+The log showed both the bad commit and the new revert commit:
+
+```text
+ea4c34b (HEAD -> main) Revert "Add exaggerated claim (on purpose, for Part 4)"
+f8c04bd Add exaggerated claim (on purpose, for Part 4)
+2313124 Record Part 4 staged recovery
+0bd00ba Complete Part 3 worklog
+f9c21e8 Reword minimum trip duration cutoff
+```
+
+**Q4:** Git keeps both commits because `git revert` does not erase history. It creates a new commit that reverses the earlier change, which preserves a clear audit trail showing what happened and how it was corrected.
