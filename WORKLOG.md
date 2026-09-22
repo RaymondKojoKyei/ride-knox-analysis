@@ -311,3 +311,120 @@ The final branch list showed:
 ```text
 * main
 ```
+
+<<<<<<< HEAD
+Trips lasting more than 24 hours were excluded because they were viewed as likely docking errors.
+=======
+Trips exceeding 24 hours were excluded because they were considered likely cases of improper docking.
+>>>>>>> reword-limitations
+
+
+## Part 6
+
+### TODO 6a — Create a conflicting branch change
+
+Created and switched to the branch:
+
+```text
+reword-limitations
+```
+
+On that branch, I changed the 24-hour limitation sentence in `report.md` to:
+
+```text
+Trips exceeding 24 hours were excluded because they were considered likely cases of improper docking.
+```
+
+I committed the change with:
+
+```text
+Reword 24-hour limitation
+```
+
+### TODO 6b — Make a different change on main
+
+I switched back to `main` and changed the same sentence differently:
+
+```text
+Trips lasting more than 24 hours were excluded because they were viewed as likely docking errors.
+```
+
+I committed that change with:
+
+```text
+Reword 24-hour limit on main
+```
+
+### TODO 6c — Merge and create a conflict
+
+When I merged `reword-limitations` into `main`, Git reported:
+
+```text
+Auto-merging report.md
+CONFLICT (content): Merge conflict in report.md
+Automatic merge failed; fix conflicts and then commit the result.
+```
+
+The conflict section in `report.md` showed:
+
+```text
+<<<<<<< HEAD
+Trips lasting more than 24 hours were excluded because they were viewed as likely docking errors.
+=======
+Trips exceeding 24 hours were excluded because they were considered likely cases of improper docking.
+>>>>>>> reword-limitations
+```
+
+**Q6a:** The wording under `HEAD` came from `main` because `HEAD` pointed to the branch I was currently on when I ran the merge.
+
+### TODO 6d — Resolve the conflict
+
+I resolved the conflict by keeping the `main` wording:
+
+```text
+Trips lasting more than 24 hours were excluded because they were viewed as likely docking errors.
+```
+
+I removed the conflict markers, staged the resolved file, and committed with:
+
+```text
+Resolve 24-hour limitation conflict using main wording
+```
+
+The log showed:
+
+```text
+da128de (HEAD -> main) Resolve 24-hour limitation conflict using main wording
+7f47f02 Reword 24-hour limit on main
+70dfd64 Reword 24-hour limitation
+614af31 Complete Part 5 worklog
+bc2dd51 Raise minimum trip cutoff to 2 minutes
+1584042 Complete Part 4 worklog
+```
+
+I then deleted the merged branch:
+
+```text
+git branch -d reword-limitations
+```
+
+Git confirmed:
+
+```text
+Deleted branch reword-limitations (was 70dfd64).
+```
+
+The final branch list showed:
+
+```text
+* main
+```
+
+Final status:
+
+```text
+On branch main
+nothing to commit, working tree clean
+```
+
+**Q6b:** A merge conflict is not Git failing; it is Git asking the user to decide which competing change should be kept.
