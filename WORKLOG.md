@@ -428,3 +428,48 @@ nothing to commit, working tree clean
 ```
 
 **Q6b:** A merge conflict is not Git failing; it is Git asking the user to decide which competing change should be kept.
+
+
+## Part 7
+
+### TODO 7a — Create and connect GitHub repository
+
+Created an empty GitHub repository named:
+
+```text
+ride-knox-analysis
+```
+
+Connected the local repository with:
+
+```text
+git remote add origin https://github.com/RaymondKojoKyei/ride-knox-analysis.git
+```
+
+### TODO 7b — Push to GitHub
+
+Pushed the `main` branch with:
+
+```text
+git push -u origin main
+```
+
+The terminal confirmed:
+
+```text
+To https://github.com/RaymondKojoKyei/ride-knox-analysis.git
+ * [new branch]      main -> main
+branch 'main' set up to track 'origin/main'.
+```
+
+I verified on GitHub that `analysis.ipynb`, `report.md`, `WORKLOG.md`, `.gitignore`, the `charts/` folder, and the full commit history were visible.
+
+I also confirmed that the ignored files and folder were absent:
+
+```text
+trips_2025.csv
+stations.xlsx
+scratch/
+```
+
+**Q7:** `origin` is the local nickname for the remote GitHub repository. The `-u` option sets `origin/main` as the upstream branch, so future `git push` and `git pull` commands can be run without specifying the remote and branch each time.
