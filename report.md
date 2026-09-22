@@ -13,5 +13,3 @@ Trips longer than 24 hours were excluded because they were treated as likely cas
 ## Limitations
 
 The analysis depends on the quality and completeness of the trip records. The minimum trip-duration rule may remove some genuine very short rides, while the 24-hour maximum-duration rule may also exclude unusual but valid trips.
-
-Ride Knox recorded more than one million trips in 2025.
