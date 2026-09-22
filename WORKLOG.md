@@ -167,3 +167,6 @@ f53dff0 Add Ride Knox analysis report
 ```
 
 **Q3:** After the change has been committed, `git diff report.md` would show no output because there would be no uncommitted differences between the working copy and the latest commit.
+
+
+### Testing staged recovery for Part 4B
