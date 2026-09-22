@@ -245,3 +245,69 @@ f9c21e8 Reword minimum trip duration cutoff
 ```
 
 **Q4:** Git keeps both commits because `git revert` does not erase history. It creates a new commit that reverses the earlier change, which preserves a clear audit trail showing what happened and how it was corrected.
+
+
+## Part 5
+
+### TODO 5a — Create the branch
+
+Created and switched to the new branch with:
+
+```text
+git switch -c min-cutoff-2min
+```
+
+The branch list showed:
+
+```text
+  main
+* min-cutoff-2min
+```
+
+### TODO 5b — Change the minimum cutoff
+
+On the `min-cutoff-2min` branch, I changed the minimum valid trip duration in `analysis.ipynb` from 1 minute to 2 minutes and updated the matching sentence in `report.md`.
+
+Both files were committed together with the message:
+
+```text
+Raise minimum trip cutoff to 2 minutes
+```
+
+**Q5a:** The notebook and report belong in one commit because they represent the same logical change. The notebook changes the actual cleaning rule, while the report documents that same rule.
+
+### TODO 5c — Return to main and merge
+
+I switched back to `main`. Before the merge, the main branch still represented the original one-minute cutoff.
+
+I then merged the feature branch:
+
+```text
+Updating 1584042..bc2dd51
+Fast-forward
+ analysis.ipynb | 596 +++++++++++++++++++++++++++++----------------------------
+ report.md      |   2 +-
+ 2 files changed, 303 insertions(+), 295 deletions(-)
+```
+
+**Q5b:** The merge was a fast-forward because `main` had not received any new commits after the `min-cutoff-2min` branch was created. Git could therefore move the `main` pointer directly to the branch's latest commit without creating a separate merge commit.
+
+### TODO 5d — Delete the merged branch
+
+Deleted the merged branch with:
+
+```text
+git branch -d min-cutoff-2min
+```
+
+Git confirmed:
+
+```text
+Deleted branch min-cutoff-2min (was bc2dd51).
+```
+
+The final branch list showed:
+
+```text
+* main
+```
