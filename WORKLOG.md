@@ -568,7 +568,7 @@ nothing to commit, working tree clean
 
 ## Reflection
 
-**R1:** Git gives me a safer way to manage changes to a project because I can track what changed, work on separate branches, and recover from mistakes without losing earlier work. GitHub also gives me a remote copy of the repository that I can use to recover or continue the project from another location.
+**R1:** The Part 4 committed-oops exercise changed how I feel about Git the most. Seeing that I could safely undo a bad commit with `git revert` while preserving the history made Git feel less intimidating because mistakes can be corrected without hiding what happened.
 
 **R2 — AI Disclosure:** I used ChatGPT to help me understand the assignment instructions, learn the Git commands, troubleshoot errors, and organize my WORKLOG.md. I ran the commands myself, reviewed the outputs, made the required file changes, and verified the Git and GitHub results.
 
