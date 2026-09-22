@@ -123,3 +123,47 @@ nothing to commit, working tree clean
 ```
 
 **Q2:** The charts are committed because they are small project outputs that help document and reproduce the analysis. The raw CSV and Excel files are ignored because they are source data files that can be large, may change independently, and do not need to be stored in the Git repository.
+
+
+## Part 3
+
+### TODO 3a — Reword minimum-duration sentence
+
+Reworded the one-minute cutoff sentence in `report.md` without changing its meaning.
+
+Before committing, I ran:
+
+```text
+git diff report.md
+```
+
+The diff showed:
+
+```diff
+-Trips with durations shorter than 1 minute were excluded because they were treated as likely dock fumbles rather than meaningful rides.
++Trips lasting less than 1 minute were excluded because they were considered likely dock fumbles rather than meaningful rides.
+```
+
+This confirmed that one line was removed and replaced with the revised wording.
+
+### TODO 3b — Commit the change
+
+Committed the report change with the message:
+
+```text
+Reword minimum trip duration cutoff
+```
+
+Then `git log --oneline` showed:
+
+```text
+f9c21e8 (HEAD -> main) Reword minimum trip duration cutoff
+fe55ad5 Complete Part 2 worklog
+7af5bd3 Add project ignore rules
+04c0d6f Complete Part 1 worklog
+b5d14b4 Add assignment worklog
+0cc2ba8 Add analysis notebook and charts
+f53dff0 Add Ride Knox analysis report
+```
+
+**Q3:** After the change has been committed, `git diff report.md` would show no output because there would be no uncommitted differences between the working copy and the latest commit.
