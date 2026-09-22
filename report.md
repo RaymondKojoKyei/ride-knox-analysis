@@ -8,7 +8,7 @@ This analysis reviews Ride Knox trip data and summarizes ridership patterns, sta
 
 Trips lasting less than 2 minutes were excluded because they were considered likely dock fumbles rather than meaningful rides.
 
-Trips longer than 24 hours were excluded because they were treated as likely cases where a bike was not properly docked.
+Trips lasting more than 24 hours were excluded because they were viewed as likely docking errors.
 
 ## Limitations
 
