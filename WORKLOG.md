@@ -312,13 +312,6 @@ The final branch list showed:
 * main
 ```
 
-<<<<<<< HEAD
-Trips lasting more than 24 hours were excluded because they were viewed as likely docking errors.
-=======
-Trips exceeding 24 hours were excluded because they were considered likely cases of improper docking.
->>>>>>> reword-limitations
-
-
 ## Part 6
 
 ### TODO 6a — Create a conflicting branch change
