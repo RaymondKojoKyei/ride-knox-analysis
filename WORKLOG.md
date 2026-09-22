@@ -583,3 +583,32 @@ nothing to commit, working tree clean
 ## Part 9
 
 Created a throwaway branch to demonstrate two diverging Git timelines.
+
+### Part 9 — Challenge
+
+I created a temporary branch and made separate commits on `main` and `challenge-graph`.
+
+I then ran:
+
+```text
+git log --oneline --all --graph -8
+```
+
+The graph showed:
+
+```text
+* 1d99545 (HEAD -> main) Start Part 9 graph challenge
+| * 533b0b6 (challenge-graph) Add Part 9 branch timeline marker
+|/
+* 56284d5 (origin/main, origin/HEAD) Add reflection and AI disclosure
+* fa37f08 Complete Part 8 worklog
+* 87d7ac5 Record recovery clone verification
+* 54cc7bb Complete Part 7 worklog
+* 0c0395e Complete Part 6 worklog
+*   da128de Resolve 24-hour limitation conflict using main wording
+|\
+```
+
+The `main` timeline contains commit `1d99545`, while the `challenge-graph` timeline contains commit `533b0b6`. The two timelines split after commit `56284d5`.
+
+**Q9:** A future merge at this point would not be able to fast-forward because both `main` and `challenge-graph` contain different commits after their common commit `56284d5`. Git would need to combine the two histories instead of simply moving the `main` pointer forward.
