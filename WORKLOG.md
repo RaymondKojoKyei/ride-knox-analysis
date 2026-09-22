@@ -472,4 +472,4 @@ stations.xlsx
 scratch/
 ```
 
-**Q7:** `origin` is the local nickname for the remote GitHub repository. The `-u` option sets `origin/main` as the upstream branch, so future `git push` and `git pull` commands can be run without specifying the remote and branch each time.
+**Q7:** `origin` is the local nickname for the remote GitHub repository. The `-u` option sets `origin/main` as the upstream branch, so future `git push` and `git pull` commands can be run without specifying the remote and branch each time.Recovery clone verified successfully in a separate location.
