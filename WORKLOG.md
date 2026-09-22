@@ -472,4 +472,101 @@ stations.xlsx
 scratch/
 ```
 
-**Q7:** `origin` is the local nickname for the remote GitHub repository. The `-u` option sets `origin/main` as the upstream branch, so future `git push` and `git pull` commands can be run without specifying the remote and branch each time.Recovery clone verified successfully in a separate location.
+**Q7:** `origin` is the local nickname for the remote GitHub repository. The `-u` option sets `origin/main` as the upstream branch, so future `git push` and `git pull` commands can be run without specifying the remote and branch each time.
+
+
+Recovery clone verified successfully in a separate location.
+
+
+## Part 8
+
+### TODO 8a — Clone a recovery copy
+
+I cloned the GitHub repository into a separate folder named `ride-knox-recovery`:
+
+```text
+git clone https://github.com/RaymondKojoKyei/ride-knox-analysis.git ride-knox-recovery
+```
+
+The recovery copy was located at:
+
+```text
+C:\Users\RAY KYEI\Documents\ride-knox-recovery
+```
+
+### TODO 8b — Verify repository history
+
+In the recovery clone, I ran:
+
+```text
+git log --oneline --all --graph
+```
+
+The history showed the previous commits, including the merge conflict resolution and the revert:
+
+```text
+* 54cc7bb (HEAD -> main, origin/main, origin/HEAD) Complete Part 7 worklog
+* 0c0395e Complete Part 6 worklog
+*   da128de Resolve 24-hour limitation conflict using main wording
+|\
+| * 70dfd64 Reword 24-hour limitation
+* | 7f47f02 Reword 24-hour limit on main
+|/
+* 614af31 Complete Part 5 worklog
+* bc2dd51 Raise minimum trip cutoff to 2 minutes
+* 1584042 Complete Part 4 worklog
+* ea4c34b Revert "Add exaggerated claim (on purpose, for Part 4)"
+* f8c04bd Add exaggerated claim (on purpose, for Part 4)
+```
+
+### TODO 8c — Make and push a change from the recovery clone
+
+I added the following line to `WORKLOG.md` in the recovery clone:
+
+```text
+Recovery clone verified successfully in a separate location.
+```
+
+I committed it with:
+
+```text
+Record recovery clone verification
+```
+
+and pushed it to GitHub.
+
+Git confirmed:
+
+```text
+54cc7bb..87d7ac5  main -> main
+```
+
+### TODO 8d — Pull the recovery change into the original repository
+
+I returned to the original `ride-knox-analysis` repository and ran:
+
+```text
+git pull
+```
+
+The terminal showed:
+
+```text
+Updating 54cc7bb..87d7ac5
+Fast-forward
+ WORKLOG.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+```
+
+I verified that the recovery-clone line appeared in the original `WORKLOG.md`.
+
+The final status showed:
+
+```text
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+```
+
+**Q8:** This recovery workflow protects against losing the local project folder or computer because the repository and its history can be recreated from GitHub. A good habit is to commit meaningful work regularly and push those commits to the remote repository.
