@@ -153,3 +153,54 @@ The work was completed on branch `21-integrate-2026` and merged through an issue
 #### Q-B1
 
 One non-data hand-off item that must never be committed is `ride_knox_api_token.txt`. It contains an API credential from the app vendor. I protected it with a specific `.gitignore` rule before copying it into the repository working directory. I then used `git status --ignored` to verify that Git recognized the file as ignored. The risk is that committing a credential to public repository history could expose access to the vendor API, and simply deleting the file in a later commit would not remove it from earlier history.
+
+
+### Issue #22 — Update reproducibility instructions for both years
+
+The README was updated so another analyst can reproduce both the 2025 and 2026 analyses.
+
+The documentation now identifies all four required raw data files:
+
+- `trips_2025.csv`
+- `stations.xlsx`
+- `trips_2026_h1.csv`
+- `stations_2026.xlsx`
+
+All four files are expected to remain in the repository root and are intentionally excluded from Git.
+
+The README now explains how to:
+
+1. obtain and place the raw data files;
+2. install the required packages using `pip install -r requirements.txt`;
+3. start Jupyter Notebook;
+4. open and run `2025/analysis.ipynb`;
+5. open and run `2026/analysis_2026.ipynb`.
+
+The existing `requirements.txt` already contained the required packages:
+
+- pandas
+- matplotlib
+- openpyxl
+- jupyter
+
+The work was completed on branch `22-update-reproducibility` and merged through an issue-linked pull request using `Closes #22`.
+
+### Part B — Ignore verification
+
+After the 2026 hand-off material was present locally, I ran:
+
+`git status --ignored`
+
+Git showed the following excluded items:
+
+- `ride_knox_api_token.txt`
+- `scratch/`
+- `stations.xlsx`
+- `trips_2025.csv`
+- `2025/.ipynb_checkpoints/`
+
+The credential and scratch files were present on disk but remained invisible to normal Git tracking.
+
+#### Q-B1
+
+One non-data hand-off item that must never be committed is `ride_knox_api_token.txt`. It contains an application credential rather than analysis content. I protected it by adding its exact filename to `.gitignore` before bringing the hand-off into the working repository. I then verified the rule with `git check-ignore` and later confirmed with `git status --ignored` that the file could exist locally without being tracked. If the token entered Git history, simply deleting it in a later commit would not remove it from earlier history, creating a credential-exposure risk.
