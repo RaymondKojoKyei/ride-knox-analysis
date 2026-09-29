@@ -13,3 +13,5 @@ Trips lasting more than 24 hours were excluded because they were viewed as likel
 ## Limitations
 
 The analysis depends on the quality and completeness of the trip records. The minimum trip-duration rule may remove some genuine very short rides, while the 24-hour maximum-duration rule may also exclude unusual but valid trips.
+
+The raw trip and station data are stored outside the Git repository and are not included in version control.
