@@ -262,3 +262,36 @@ The comment permalink is:
 https://github.com/pachehitesh/Student-Performance-Analysis/pull/1/changes#r4129483828
 
 **Q6:** A “Request changes” review can feel less personal than verbal criticism because it focuses on a specific line or change, gives a clear written explanation of what should be improved, and gives the author time to respond without being put on the spot.
+
+
+## Part 7 — Portfolio Polish
+
+### Profile README
+
+I updated my GitHub profile README in the special profile repository:
+
+```text
+https://github.com/RaymondKojoKyei/RaymondKojoKyei
+
+The profile README includes a short introduction and a tools section describing technologies I use, including Python, R, Jupyter Notebook, Git, GitHub, GIS, and data visualization.
+Pinned repository
+I pinned the Ride Knox analysis repository to my GitHub profile so it is easy to find from the profile page.
+Repository:
+https://github.com/RaymondKojoKyei/ride-knox-analysis
+
+Ride Knox README polish
+I created the branch:
+docs/readme-polish
+
+I improved the repository README by moving the main station-demand finding and station-pressure chart near the top of the page.
+The added headline was:
+Ride Knox station demand is uneven: busy campus stations face the greatest capacity pressure, while Bearden and Sequoyah Hills show comparatively low use.
+
+The chart is embedded using the relative path:
+charts/station_pressure_yoy.png
+
+The commit message was:
+Highlight key finding in README
+
+The change was merged through a pull request into main.
+Q7: Two things that make this project more likely to be clicked are the clear key finding near the top of the README and the station-pressure chart, which quickly shows the main result visually. Pinning the repository on my GitHub profile also makes the project easier to discover.
