@@ -2,7 +2,7 @@
 
 ## Summary
 
-This analysis reviews Ride Knox trip data and summarizes ridership patterns, station activity, and data-quality decisions used in the analysis.
+Ride Knox station demand is uneven: busy campus stations face the greatest capacity pressure, while Bearden and Sequoyah Hills show comparatively low use.
 
 ## Data Cleaning
 
