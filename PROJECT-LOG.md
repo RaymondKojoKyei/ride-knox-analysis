@@ -83,3 +83,42 @@ and merged through a pull request with:
 Closes #19
 
 I also left a self-review line comment on the ride_knox_api_token.txt rule explaining that credentials must never enter repository history.
+
+### Issue #20 — Reorganize the repository for separate yearly analyses
+
+The existing 2025 analysis files were moved into a dedicated `2025/` directory so the repository can clearly support multiple years without confusing the 2025 and 2026 work.
+
+The following files were reorganized:
+
+- `analysis.ipynb` → `2025/analysis.ipynb`
+- `report.md` → `2025/report.md`
+- `charts/nonmember_recovery.png` → `2025/charts/nonmember_recovery.png`
+- `charts/station_pressure_yoy.png` → `2025/charts/station_pressure_yoy.png`
+
+Before moving the files, I searched the README for references to the notebook, report, and chart paths. This identified dependencies that would have broken after the reorganization.
+
+The 2025 notebook also originally read:
+
+`trips_2025.csv`
+
+and
+
+`stations.xlsx`
+
+from its own directory. Because the notebook is now inside `2025/` while the ignored raw data remains in the repository root, I changed the notebook paths to:
+
+`../trips_2025.csv`
+
+and
+
+`../stations.xlsx`
+
+The README image paths and repository structure were also updated to match the new layout.
+
+The work was completed on branch `20-reorganize-years` and merged through an issue-linked pull request using `Closes #20`.
+
+#### Q-B2
+
+One path dependency that would have broken was the station-pressure chart referenced by the README. Before the move, the README used `charts/station_pressure_yoy.png`. After moving the chart into the 2025 directory, that path would no longer exist. I caught the dependency by searching the README before making the move and updated the path to `2025/charts/station_pressure_yoy.png`.
+
+The notebook had a second path dependency: it expected the raw 2025 CSV and Excel files in the same directory as the notebook. Moving the notebook into `2025/` would therefore have caused file-not-found errors. I searched the notebook for the data filenames and changed the relative paths so it continues to read the ignored raw data from the repository root.
