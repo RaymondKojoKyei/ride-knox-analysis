@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Ride Knox Ridership and Station Performance: 2025–2026
 
 A reproducible analysis of Ride Knox ridership patterns, station activity, and station-capacity pressure.
