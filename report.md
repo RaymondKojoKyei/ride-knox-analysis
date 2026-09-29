@@ -2,7 +2,7 @@
 
 ## Summary
 
-Ride Knox ridership and station demand vary across the network, with some locations showing much greater use than others.
+Ride Knox station demand is uneven: busy campus stations face the greatest capacity pressure, while Bearden and Sequoyah Hills show comparatively low use.
 
 ## Data Cleaning
 
