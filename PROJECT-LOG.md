@@ -54,3 +54,4 @@ I translated the project brief into seven GitHub issues so the work could be com
 The issues are cross-linked so later work depends on the earlier safety and organization steps.
 Q-A1
 Issue #19 had to be completed before Issue #21. The ignore rules needed to protect credentials, raw data, and scratch files before the 2026 hand-off was copied into the repository. Otherwise, a sensitive file such as ride_knox_api_token.txt could accidentally be staged or committed and become part of the public repository history.
+
