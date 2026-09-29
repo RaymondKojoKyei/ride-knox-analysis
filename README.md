@@ -1,4 +1,4 @@
-# Ride Knox 2025–2026: Ridership Recovery and Station Pressure
+# Ride Knox 2025–2026: Ridership Recovery, Station Pressure, and Operations
 
 A reproducible analysis of Ride Knox ridership patterns, station activity, and station-capacity pressure.
 ![2026 Ridership Recovery](2026/charts/recovery_vs_2025.png)
