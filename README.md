@@ -59,6 +59,8 @@ The station-capacity analysis shows that activity is not evenly distributed acro
 
 ![Ride Knox station capacity pressure](charts/station_pressure_yoy.png)
 
+pip install -r requirements.txt
+
 ## Limitations
 
 - The analysis covers only one year of trip data, so it cannot establish long-term trends by itself.
