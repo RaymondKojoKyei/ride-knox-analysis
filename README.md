@@ -1,6 +1,8 @@
-# Ride Knox Bike-Share Analysis
+<<<<<<< HEAD
+# Ride Knox Ridership and Station Performance: 2025–2026
 
 A reproducible analysis of Ride Knox ridership patterns, station activity, and station-capacity pressure.
+![2026 Ridership Recovery](2026/charts/recovery_vs_2025.png)
 
 ## Key Finding
 
@@ -16,6 +18,26 @@ This project addresses two operational questions for Ride Knox:
 2. Which stations appear to have the greatest need for additional capacity?
 
 The analysis uses trip-level data together with station information to examine ridership patterns and compare station activity relative to available dock capacity.
+
+## 2025 Analysis
+
+The 2025 work provides the starting point for understanding Ride Knox ridership and how stations were being used. It looks at rider activity and station pressure to show where demand was concentrated and where capacity issues may have been developing.
+
+The 2025 notebook and report are stored in the `2025/` folder.
+
+## Interpretation Notes
+
+The 2026 results should be viewed as an early-year comparison rather than a complete annual trend. Since the 2026 trip data cover only the first half of the year, seasonal patterns may affect direct comparisons with the full 2025 period.
+
+Changes in station pressure should also be considered alongside changes in dock capacity. A lower pressure value may reflect added station capacity as well as changes in ridership.
+
+## 2026 Analysis
+
+The 2026 analysis builds on the 2025 results by looking at the first half of 2026 and comparing recent ridership and station activity with the earlier baseline.
+
+The results show that casual ridership was still below the previous year, while the picture improved when day-pass riders were included. The analysis also shows that station pressure changed at some locations after dock capacity was expanded.
+
+The 2026 notebook, memo, and charts are stored in the `2026/` folder.
 
 ## Data
 
