@@ -2,7 +2,7 @@
 
 ## Summary
 
-This analysis reviews Ride Knox trip data and summarizes ridership patterns, station activity, and data-quality decisions used in the analysis.
+Ride Knox ridership and station demand vary across the network, with some locations showing much greater use than others.
 
 ## Data Cleaning
 
