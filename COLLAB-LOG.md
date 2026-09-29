@@ -226,3 +226,39 @@ c913e30 Add project README and update report headline
 ### Q5
 
 The site uses the **Cayman** theme. If an image worked in the repository but broke on GitHub Pages, I would first check the relative file path, filename, capitalization, and whether the image file was actually committed to the repository.
+
+
+## Part 6 — Peer Review / Fork Contribution
+
+Because I did not have a partner available, I used the fallback fork workflow.
+
+I worked from my fork of the public repository:
+
+```text
+https://github.com/RaymondKojoKyei/Student-PerfoStudent-Performance-Analysisrmance-Analysis
+
+I created the branch:
+
+```text
+docs/readme-clarification
+
+I made a small genuine documentation improvement by closing an unfinished Markdown code block in the README so the Getting Started section would render correctly.
+
+The commit message was:
+
+```text
+Close README code block
+
+I opened a cross-repository pull request to the original repository:
+
+```text
+https://github.com/pachehitesh/Student-Performance-Analysis/pull/1
+
+I also added a line-level review comment explaining why the README fix was needed.
+
+The comment permalink is:
+
+```text
+https://github.com/pachehitesh/Student-Performance-Analysis/pull/1/changes#r4129483828
+
+**Q6:** A “Request changes” review can feel less personal than verbal criticism because it focuses on a specific line or change, gives a clear written explanation of what should be improved, and gives the author time to respond without being put on the spot.
