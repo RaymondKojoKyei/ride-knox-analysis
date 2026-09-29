@@ -222,3 +222,7 @@ b7886ca Reword report headline on main
 c913e30 Add project README and update report headline
 77541c9 Merge pull request #6 from RaymondKojoKyei/docs/part2-log
 9ec4468 Document Part 2 pull request workflow
+
+### Q5
+
+The site uses the **Cayman** theme. If an image worked in the repository but broke on GitHub Pages, I would first check the relative file path, filename, capitalization, and whether the image file was actually committed to the repository.
