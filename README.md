@@ -2,6 +2,12 @@
 
 A reproducible analysis of Ride Knox ridership patterns, station activity, and station-capacity pressure.
 
+## Key Finding
+
+Ride Knox station demand is uneven: busy campus stations face the greatest capacity pressure, while Bearden and Sequoyah Hills show comparatively low use.
+
+![Station Pressure: 2025 vs. 2026](charts/station_pressure_yoy.png)
+
 ## Overview
 
 This project addresses two operational questions for Ride Knox:
