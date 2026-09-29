@@ -295,3 +295,32 @@ Highlight key finding in README
 
 The change was merged through a pull request into main.
 Q7: Two things that make this project more likely to be clicked are the clear key finding near the top of the README and the station-pressure chart, which quickly shows the main result visually. Pinning the repository on my GitHub profile also makes the project easier to discover.
+
+## Part 8 — Reproducibility Bonus
+
+I created Issue #14:
+
+```text
+Add requirements.txt for reproducibility.
+
+I created the branch:
+chore/add-requirements
+
+I added a new requirements.txt file containing:
+pandas
+matplotlib
+openpyxl
+jupyter
+
+I also updated the README so users can install the required packages with:
+pip install -r requirements.txt
+
+The commit message was:
+Add requirements file for reproducibility
+
+The pull request description included:
+Closes #14
+
+I added a self-review line comment explaining that the requirements file gives users one consistent command for installing the project dependencies.
+The pull request was merged into main, and Issue #14 automatically closed.
+Q8: An earlier habit that helped protect this work was keeping raw data and generated project files organized separately from the Git repository. The new requirements.txt especially benefits classmates, reviewers, instructors, and future users because they can quickly install the packages needed to reproduce the analysis.
