@@ -324,3 +324,14 @@ Closes #14
 I added a self-review line comment explaining that the requirements file gives users one consistent command for installing the project dependencies.
 The pull request was merged into main, and Issue #14 automatically closed.
 Q8: An earlier habit that helped protect this work was keeping raw data and generated project files organized separately from the Git repository. The new requirements.txt especially benefits classmates, reviewers, instructors, and future users because they can quickly install the packages needed to reproduce the analysis.
+
+
+## Reflection
+
+### R1
+
+The pull request conflict was more nerve-wracking for me because I had to resolve two competing versions without losing the correct wording. Reviewing someone else’s work felt more straightforward because I could focus on a specific change and explain why it should be improved.
+
+### R2 — AI Disclosure
+
+I used ChatGPT as a learning assistant during this assignment. It helped me understand the Git and GitHub workflow, interpret terminal output, organize the required steps, draft short issue and pull request descriptions, and troubleshoot mistakes such as branch commands, merge-conflict documentation, and Markdown formatting. I still carried out the Git commands, GitHub actions, file edits, issue creation, pull requests, reviews, merges, and final checks myself.
