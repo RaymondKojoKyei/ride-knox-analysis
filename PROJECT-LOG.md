@@ -55,3 +55,31 @@ The issues are cross-linked so later work depends on the earlier safety and orga
 Q-A1
 Issue #19 had to be completed before Issue #21. The ignore rules needed to protect credentials, raw data, and scratch files before the 2026 hand-off was copied into the repository. Otherwise, a sensitive file such as ride_knox_api_token.txt could accidentally be staged or committed and become part of the public repository history.
 
+
+## Part B — Integrate 2026
+
+### Issue #19 — Protect the 2026 hand-off
+
+I updated `.gitignore` before copying any 2026 hand-off files into the repository.
+
+The added ignore rules were:
+
+```text
+trips_2026_h1.csv
+stations_2026.xlsx
+ride_knox_api_token.txt
+
+The existing rules already protected:
+trips_2025.csv
+stations.xlsx
+.ipynb_checkpoints/
+scratch/
+
+I verified the rules with git check-ignore -v. Git confirmed that the new 2026 data files, API credential, and scratch/ directory are ignored.
+The change was completed on branch:
+19-protect-handoff
+
+and merged through a pull request with:
+Closes #19
+
+I also left a self-review line comment on the ride_knox_api_token.txt rule explaining that credentials must never enter repository history.
