@@ -8,7 +8,6 @@ Ride Knox station demand is uneven: busy campus stations face the greatest capac
 
 ![Station Pressure: 2025 vs. 2026](2025/charts/station_pressure_yoy.png)
 
-
 ## Overview
 
 This project addresses two operational questions for Ride Knox:
@@ -20,7 +19,28 @@ The analysis uses trip-level data together with station information to examine r
 
 ## Data
 
-The raw data files are intentionally excluded from this GitHub repository and remain ignored by Git. To reproduce the analysis, obtain `trips_2025.csv` and `stations.xlsx` from the course/project data source and place them in the repository root; the 2025 notebook is located at `2025/analysis.ipynb`.
+The raw data files are intentionally excluded from this GitHub repository and remain ignored by Git.
+
+To reproduce the 2025 and 2026 analyses, obtain the following four course data files:
+
+- `trips_2025.csv`
+- `stations.xlsx`
+- `trips_2026_h1.csv`
+- `stations_2026.xlsx`
+
+Place all four files in the repository root:
+
+```text
+ride-knox-analysis/
+├── trips_2025.csv
+├── stations.xlsx
+├── trips_2026_h1.csv
+├── stations_2026.xlsx
+├── 2025/
+└── 2026/
+```
+
+The raw data files should remain local and should not be committed to GitHub.
 
 ### `trips_2025.csv`
 
@@ -49,18 +69,45 @@ The raw data files are intentionally excluded from this GitHub repository and re
 
 ## How to Run
 
-1. Install the required Python packages:
+1. Clone or download this repository.
+
+2. Obtain the four raw course data files:
+   - `trips_2025.csv`
+   - `stations.xlsx`
+   - `trips_2026_h1.csv`
+   - `stations_2026.xlsx`
+
+3. Place all four raw data files in the repository root folder.
+
+4. Open PowerShell or the VS Code terminal in the repository root.
+
+5. Install the required Python packages by running:
 
    ```bash
-   pip install pandas matplotlib openpyxl jupyter
+   pip install -r requirements.txt
+   ```
 
-   ## Key Findings
+6. Start Jupyter Notebook by running:
+
+   ```bash
+   jupyter notebook
+   ```
+
+7. To reproduce the 2025 analysis:
+   - open `2025/analysis.ipynb`
+   - run the notebook from top to bottom
+
+8. To reproduce the 2026 analysis:
+   - open `2026/analysis_2026.ipynb`
+   - run the notebook from top to bottom
+
+Both notebooks use relative paths to read the raw data files from the repository root. The raw data files are intentionally excluded from GitHub and should remain local.
+
+## Key Findings
 
 The station-capacity analysis shows that activity is not evenly distributed across the Ride Knox network. Busy campus stations experience substantially greater trips-per-dock pressure, while stations in Bearden and Sequoyah Hills have comparatively low activity. This suggests that future capacity decisions should consider station utilization rather than simply adding docks uniformly across the system.
 
 ![Ride Knox station capacity pressure](2025/charts/station_pressure_yoy.png)
-
-pip install -r requirements.txt
 
 ## Limitations
 
@@ -79,6 +126,13 @@ ride-knox-analysis/
 │   └── charts/
 │       ├── nonmember_recovery.png
 │       └── station_pressure_yoy.png
+├── 2026/
+│   ├── analysis_2026.ipynb
+│   ├── memo_2026.md
+│   └── charts/
+│       ├── daypass_vs_others.png
+│       ├── recovery_vs_2025.png
+│       └── station_pressure_change.png
 ├── screenshots/
 ├── README.md
 ├── requirements.txt
@@ -87,3 +141,4 @@ ride-knox-analysis/
 ├── COLLAB-LOG.md
 ├── WORKLOG.md
 └── .gitignore
+```
