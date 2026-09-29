@@ -187,3 +187,38 @@ eee886d Complete Part 0 collaboration log
 ```
 
 **Q2:** While the pull request was open but not yet merged, `main` had not changed because the proposed change still existed only on the `chore/tidy-report` branch.
+
+Ride Knox station demand is uneven: busy campus stations face the greatest capacity pressure, while Bearden and Sequoyah Hills show comparatively low use.
+
+
+### TODO 4a — Create conflicting changes
+
+The `docs/project-readme` branch and `main` were deliberately changed differently on the same report headline so that the pull request would produce a merge conflict.
+
+### TODO 4b — Open README pull request
+
+Opened pull request #7:
+
+```text
+Add project README
+
+https://github.com/RaymondKojoKyei/ride-knox-analysis/pull/7
+
+Closes #1
+
+<<<<<<< HEAD
+Ride Knox station demand is uneven: busy campus stations face the greatest capacity pressure, while Bearden and Sequoyah Hills show comparatively low use.
+=======
+Ride Knox ridership and station demand vary across the network, with some locations showing much greater use than others.
+>>>>>>> main
+
+Ride Knox station demand is uneven: busy campus stations face the greatest capacity pressure, while Bearden and Sequoyah Hills show comparatively low use.
+
+Resolve report headline conflict using specific station finding
+
+029c7e7 Merge pull request #7 from RaymondKojoKyei/docs/project-readme
+ec4a0ca Resolve report headline conflict using specific station finding
+b7886ca Reword report headline on main
+c913e30 Add project README and update report headline
+77541c9 Merge pull request #6 from RaymondKojoKyei/docs/part2-log
+9ec4468 Document Part 2 pull request workflow
