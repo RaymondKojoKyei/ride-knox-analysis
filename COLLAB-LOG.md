@@ -125,3 +125,65 @@ In issue #2, I mentioned `@RaymondKojoKyei` and referenced README issue `#1`, li
 Screenshot showing the rendered mention and issue cross-reference:
 
 ![Part 1 issue mention and cross-reference](screenshots/part1-issue-link.png)
+
+
+### TODO 2a — Create the branch
+
+Created and switched to the required branch:
+
+```text
+chore/tidy-report
+```
+
+### TODO 2b — Improve the report
+
+I made one small change to `report.md` clarifying that the raw data files are intentionally stored outside the Git repository and are not tracked in version control.
+
+### TODO 2c — Commit, push, and open pull request
+
+Commit message:
+
+```text
+Clarify raw data availability in report
+```
+
+Pull request:
+
+```text
+#5 — Clarify raw data availability in report
+```
+
+PR URL:
+
+```text
+https://github.com/RaymondKojoKyei/ride-knox-analysis/pull/5
+```
+
+PR description:
+
+```text
+This pull request adds a short clarification to report.md explaining that the raw trip and station data are stored outside the Git repository and are not included in version control.
+```
+
+### TODO 2d — Self-review
+
+On the pull request's `Files changed` tab, I left a line comment explaining why the clarification was added.
+
+The line comment explained that the sentence helps readers understand that the raw data are intentionally stored outside the Git repository.
+
+### TODO 2e — Merge and update main
+
+After merging pull request #5, I switched back to `main` and ran `git pull`.
+
+The log showed:
+
+```text
+1dae9a8 Merge pull request #5 from RaymondKojoKyei/chore/tidy-report
+d64d600 Clarify raw data availability in report
+7494561 Merge pull request #4 from RaymondKojoKyei/docs/part1-log
+e63ab7f Document Part 1 issues and cross-link
+eee886d Complete Part 0 collaboration log
+1d74942 Add Assignment 6 collaboration log
+```
+
+**Q2:** While the pull request was open but not yet merged, `main` had not changed because the proposed change still existed only on the `chore/tidy-report` branch.
