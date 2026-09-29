@@ -122,3 +122,34 @@ The work was completed on branch `20-reorganize-years` and merged through an iss
 One path dependency that would have broken was the station-pressure chart referenced by the README. Before the move, the README used `charts/station_pressure_yoy.png`. After moving the chart into the 2025 directory, that path would no longer exist. I caught the dependency by searching the README before making the move and updated the path to `2025/charts/station_pressure_yoy.png`.
 
 The notebook had a second path dependency: it expected the raw 2025 CSV and Excel files in the same directory as the notebook. Moving the notebook into `2025/` would therefore have caused file-not-found errors. I searched the notebook for the data filenames and changed the relative paths so it continues to read the ignored raw data from the repository root.
+
+### Issue #21 — Integrate the 2026 analysis bundle
+
+The 2026 starter-pack hand-off was reviewed before any files were committed. It contained the 2026 notebook, memo, three charts, a credential file, and a scratch-notes folder.
+
+The following analysis files were added under `2026/`:
+
+- `2026/analysis_2026.ipynb`
+- `2026/memo_2026.md`
+- `2026/charts/daypass_vs_others.png`
+- `2026/charts/recovery_vs_2025.png`
+- `2026/charts/station_pressure_change.png`
+
+The hand-off also included `ride_knox_api_token.txt` and `scratch/download_notes.txt`. These were not committed. The credential file and scratch directory are protected by `.gitignore`.
+
+Because the 2026 notebook was moved into the `2026/` directory while the raw data files remain in the repository root, its file-reading paths were changed to:
+
+- `../trips_2025.csv`
+- `../stations.xlsx`
+- `../trips_2026_h1.csv`
+- `../stations_2026.xlsx`
+
+The notebook introduction was also updated so that its instructions match the new repository layout.
+
+Before staging, `git status` showed only the intended `2026/` directory. `git status --ignored` confirmed that the credential, scratch files, and existing 2025 raw data were excluded from Git.
+
+The work was completed on branch `21-integrate-2026` and merged through an issue-linked pull request using `Closes #21`.
+
+#### Q-B1
+
+One non-data hand-off item that must never be committed is `ride_knox_api_token.txt`. It contains an API credential from the app vendor. I protected it with a specific `.gitignore` rule before copying it into the repository working directory. I then used `git status --ignored` to verify that Git recognized the file as ignored. The risk is that committing a credential to public repository history could expose access to the vendor API, and simply deleting the file in a later commit would not remove it from earlier history.
