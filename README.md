@@ -6,7 +6,8 @@ A reproducible analysis of Ride Knox ridership patterns, station activity, and s
 
 Ride Knox station demand is uneven: busy campus stations face the greatest capacity pressure, while Bearden and Sequoyah Hills show comparatively low use.
 
-![Station Pressure: 2025 vs. 2026](charts/station_pressure_yoy.png)
+![Station Pressure: 2025 vs. 2026](2025/charts/station_pressure_yoy.png)
+
 
 ## Overview
 
@@ -19,7 +20,7 @@ The analysis uses trip-level data together with station information to examine r
 
 ## Data
 
-The raw data files are intentionally excluded from this GitHub repository and remain ignored by Git. To reproduce the analysis, obtain `trips_2025.csv` and `stations.xlsx` from the course/project data source and place them in the repository root beside `analysis.ipynb`.
+The raw data files are intentionally excluded from this GitHub repository and remain ignored by Git. To reproduce the analysis, obtain `trips_2025.csv` and `stations.xlsx` from the course/project data source and place them in the repository root; the 2025 notebook is located at `2025/analysis.ipynb`.
 
 ### `trips_2025.csv`
 
@@ -57,7 +58,7 @@ The raw data files are intentionally excluded from this GitHub repository and re
 
 The station-capacity analysis shows that activity is not evenly distributed across the Ride Knox network. Busy campus stations experience substantially greater trips-per-dock pressure, while stations in Bearden and Sequoyah Hills have comparatively low activity. This suggests that future capacity decisions should consider station utilization rather than simply adding docks uniformly across the system.
 
-![Ride Knox station capacity pressure](charts/station_pressure_yoy.png)
+![Ride Knox station capacity pressure](2025/charts/station_pressure_yoy.png)
 
 pip install -r requirements.txt
 
@@ -72,12 +73,17 @@ pip install -r requirements.txt
 
 ```text
 ride-knox-analysis/
-├── analysis.ipynb
-├── report.md
+├── 2025/
+│   ├── analysis.ipynb
+│   ├── report.md
+│   └── charts/
+│       ├── nonmember_recovery.png
+│       └── station_pressure_yoy.png
+├── screenshots/
 ├── README.md
+├── requirements.txt
+├── _config.yml
+├── PROJECT-LOG.md
 ├── COLLAB-LOG.md
 ├── WORKLOG.md
-├── .gitignore
-└── charts/
-    ├── nonmember_recovery.png
-    └── station_pressure_yoy.png
+└── .gitignore
