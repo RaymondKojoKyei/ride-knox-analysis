@@ -317,6 +317,10 @@ Select-String -Path README.md -Pattern "<<<<<<<|=======|>>>>>>>"
 
 
 The command returned no matches.
+
+I kept Riley's shorter headline because it described both ridership and station performance clearly while keeping the README concise and easy to read.
+
+
 Q-C1
 The rejected push occurred because the remote shared branch had advanced after Riley created a local commit. Raymond pushed another commit first, so Riley's clone did not contain the newest remote history. Git rejected Riley's push rather than allowing newer remote work to be overwritten.
 This differed from the earlier clone-and-push exercise because the remote branch had not independently advanced between the local commit and push in that earlier exercise.
