@@ -33,6 +33,7 @@ d52ee92 Merge pull request #17 from RaymondKojoKyei/docs/final-reflection
 4b19262 Document Part 6 peer review workflow
 0100b60 Merge pull request #10 from RaymondKojoKyei/docs/part5-log
 bbf27ab Document Part 5 GitHub Pages workflow
+```
 
 I confirmed that the working tree is clean and that my Assignment 5–6 history is present.
 
@@ -50,8 +51,10 @@ I translated the project brief into seven GitHub issues so the work could be com
 #23 Co-author the two-year README with Riley
 #24 Publish the two-year GitHub Pages site
 #25 Write the 2026 release note and audit history
+```
 
 The issues are cross-linked so later work depends on the earlier safety and organization steps.
+
 Q-A1
 Issue #19 had to be completed before Issue #21. The ignore rules needed to protect credentials, raw data, and scratch files before the 2026 hand-off was copied into the repository. Otherwise, a sensitive file such as ride_knox_api_token.txt could accidentally be staged or committed and become part of the public repository history.
 
@@ -68,6 +71,7 @@ The added ignore rules were:
 trips_2026_h1.csv
 stations_2026.xlsx
 ride_knox_api_token.txt
+```
 
 The existing rules already protected:
 trips_2025.csv
@@ -231,10 +235,13 @@ I created and pushed the shared branch from the original clone:
 ```text
 git switch -c 23-coauthor-readme
 git push -u origin 23-coauthor-readme
+```
 
 I updated the README with a two-year headline, placed a 2026 chart near the top, and added separate 2025 and 2026 analysis sections.
+
 I committed and pushed the first README contribution:
 cb6b024 Rewrite README for two-year Ride Knox story
+```
 
 [Riley]
 I created a second clone:
@@ -453,5 +460,6 @@ c40600b Resolve shared README headline conflict
 7a258b4 Refine Ride Knox two-year headline
 2340536 Add Riley interpretation notes
 cb6b024 Rewrite README for two-year Ride Knox story
+```
 
 Final ignored-file verification confirmed that the raw datasets, credential, and scratch material remained local and were not tracked by Git.
