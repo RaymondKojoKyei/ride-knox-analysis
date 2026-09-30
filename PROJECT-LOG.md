@@ -196,7 +196,9 @@ Git showed the following excluded items:
 - `ride_knox_api_token.txt`
 - `scratch/`
 - `stations.xlsx`
+- `stations_2026.xlsx`
 - `trips_2025.csv`
+- `trips_2026_h1.csv`
 - `2025/.ipynb_checkpoints/`
 
 The credential and scratch files were present on disk but remained invisible to normal Git tracking.
@@ -431,7 +433,9 @@ Your branch is up to date with 'origin/main'.
 
 nothing to commit, working tree clean
 
-Final git log --oneline:
+Final git log --oneline snapshot, captured immediately before this final log-only update:
+5dc519c Document deliberate conflict resolution decision
+1e48599 Record final repository verification
 3c476f3 Add final reflection and AI disclosure
 675b41a Clean audit log formatting
 7e05807 Document release audit history
@@ -448,5 +452,6 @@ a30f2b5 Merge pull request #32 from RaymondKojoKyei/24-fix-readme-marker
 c40600b Resolve shared README headline conflict
 7a258b4 Refine Ride Knox two-year headline
 2340536 Add Riley interpretation notes
+cb6b024 Rewrite README for two-year Ride Knox story
 
 Final ignored-file verification confirmed that the raw datasets, credential, and scratch material remained local and were not tracked by Git.
