@@ -204,3 +204,126 @@ The credential and scratch files were present on disk but remained invisible to 
 #### Q-B1
 
 One non-data hand-off item that must never be committed is `ride_knox_api_token.txt`. It contains an application credential rather than analysis content. I protected it by adding its exact filename to `.gitignore` before bringing the hand-off into the working repository. I then verified the rule with `git check-ignore` and later confirmed with `git status --ignored` that the file could exist locally without being tracked. If the token entered Git history, simply deleting it in a later commit would not remove it from earlier history, creating a credential-exposure risk.
+
+
+## Part C - Co-authoring the README with Riley
+
+### Issue #23 - Co-author the two-year README with Riley
+
+This exercise used two separate clones of the same repository and one shared branch, `23-coauthor-readme`.
+
+The original Raymond clone was:
+
+`C:\Users\RAY KYEI\Documents\ride-knox-analysis`
+
+The second clone used for Riley was:
+
+`C:\Users\RAY KYEI\Documents\ride-knox-riley`
+
+### Two-clone shared-branch transcript
+
+#### [Raymond]
+
+I created and pushed the shared branch from the original clone:
+
+```text
+git switch -c 23-coauthor-readme
+git push -u origin 23-coauthor-readme
+
+I updated the README with a two-year headline, placed a 2026 chart near the top, and added separate 2025 and 2026 analysis sections.
+I committed and pushed the first README contribution:
+cb6b024 Rewrite README for two-year Ride Knox story
+
+[Riley]
+I created a second clone:
+git clone https://github.com/RaymondKojoKyei/ride-knox-analysis.git ride-knox-riley
+
+I joined the same shared branch:
+git switch 23-coauthor-readme
+
+Riley changed the README headline differently and added an Interpretation Notes section.
+The Riley contribution was committed locally as:
+2340536 Add Riley interpretation notes
+
+Riley did not push at this point.
+[Raymond]
+Back in the original clone, I changed the README headline again and pushed the new commit first:
+7a258b4 Refine Ride Knox two-year headline
+
+[Riley]
+Riley then attempted to push the earlier local commit:
+git push
+
+Git rejected the push:
+! [rejected]        23-coauthor-readme -> 23-coauthor-readme (fetch first)
+error: failed to push some refs to 'https://github.com/RaymondKojoKyei/ride-knox-analysis.git'
+hint: Updates were rejected because the remote contains work that you do not
+hint: have locally. This is usually caused by another repository pushing to
+hint: the same ref. If you want to integrate the remote changes, use
+hint: 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
+The push was rejected because the remote shared branch contained Raymond's newer commit while Riley's local clone did not yet contain that work.
+Riley then pulled the shared branch:
+git pull --no-rebase origin 23-coauthor-readme
+
+Git reported:
+Auto-merging README.md
+CONFLICT (content): Merge conflict in README.md
+Automatic merge failed; fix conflicts and then commit the result.
+
+The conflict markers showed the two competing README headlines:
+<<<<<<< HEAD
+# Ride Knox Ridership and Station Performance: 2025-2026
+=======
+# Ride Knox 2025-2026: Ridership Recovery, Station Pressure, and Operations
+>>>>>>> 7a258b49922f8da00e9408c4d58adb82422e7da8
+
+In this conflict, HEAD represented Riley's local version. The lower section represented the newer remote version that Raymond had already pushed.
+The conflict-resolution work was committed as:
+c40600b Resolve shared README headline conflict
+
+and pushed to the shared branch.
+[Raymond]
+The original clone then pulled the resolved shared branch and received both Riley's contribution and the conflict-resolution commit.
+A pull request was opened from:
+23-coauthor-readme
+
+into:
+main
+
+The pull request description included:
+Closes #23
+
+The full diff was reviewed on GitHub. I also added a line-level review comment explaining why the 2026 chart was positioned near the top of the README.
+The pull request was merged into main.
+Synchronizing both clones
+After the merge, both clones were switched to main and updated.
+The Raymond clone reached:
+4105a206ed7b157f394060728569f68717686f92
+
+The Riley clone also reached:
+4105a206ed7b157f394060728569f68717686f92
+
+This confirmed that both clones were synchronized to the same version of main after the Issue #23 merge.
+Post-merge cleanup
+During a later verification of README.md, I found that a leftover merge-conflict marker, <<<<<<< HEAD, had remained at the top of the committed README.
+I corrected this through a separate cleanup branch and pull request rather than editing main directly.
+The cleanup was merged through pull request #32, and the updated main contained no remaining conflict markers.
+I verified this with:
+Select-String -Path README.md -Pattern "<<<<<<<|=======|>>>>>>>"
+
+
+The command returned no matches.
+Q-C1
+The rejected push occurred because the remote shared branch had advanced after Riley created a local commit. Raymond pushed another commit first, so Riley's clone did not contain the newest remote history. Git rejected Riley's push rather than allowing newer remote work to be overwritten.
+This differed from the earlier clone-and-push exercise because the remote branch had not independently advanced between the local commit and push in that earlier exercise.
+
+Q-C2
+The conflict occurred on the shared feature branch 23-coauthor-readme, not on main. Riley encountered it locally while pulling Raymond's newer work into the shared branch.
+This kept main protected because the competing edits were handled before the feature work was merged. In a real team, frequent pulls, smaller commits, regular pushes, and communication before multiple people edit the same lines would help make conflicts less frequent and smaller when they do occur.
+
+Q-C3
+During the conflict in Riley's clone, HEAD represented Riley's local version because Riley was currently on the local 23-coauthor-readme branch.
+
+The content below the ======= separator represented the incoming remote version that Raymond had already pushed. Git displayed both versions so the competing changes could be compared and reconciled.
