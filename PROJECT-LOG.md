@@ -393,3 +393,16 @@ The public release can be traced through the repository history. Five important 
 ### Why the public page is auditable
 
 Unlike a normal website where changes may appear without a visible history, this project keeps a dated record of how the analysis, public communication, and supporting documentation changed over time. A reviewer can connect the public page to specific changes and supporting files, making it easier to understand what was added, when it changed, and why.
+
+
+## Final Reflection
+
+The rejected push and merge conflict showed me that collaboration problems are easier to manage when team members pull frequently and keep their commits small. In a real team, I would pull before starting work, communicate before editing shared sections, and push changes regularly so conflicting work does not build up for too long.
+
+This exercise also showed me why `main` should remain protected. The conflict happened on a feature branch, which allowed the problem to be resolved and reviewed before the work reached the public version of the project.
+
+## AI Disclosure
+
+I used ChatGPT as a learning and troubleshooting assistant during this project. I used it to help interpret Git messages, understand the required workflow, organize project steps, review Markdown formatting, and explain how to carry out Git and GitHub tasks.
+
+I reviewed the suggestions, ran the commands myself, checked the outputs, made decisions based on the assignment requirements, and revised the written material before including it in the project. The repository history, conflict exercise, browser testing, issue management, and final verification were completed through my own Git and GitHub work.
