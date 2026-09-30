@@ -329,3 +329,40 @@ Q-C3
 During the conflict in Riley's clone, HEAD represented Riley's local version because Riley was currently on the local 23-coauthor-readme branch.
 
 The content below the ======= separator represented the incoming remote version that Raymond had already pushed. Git displayed both versions so the competing changes could be compared and reconciled.
+
+
+## Part D - Publish the two-year GitHub Pages site
+
+### Issue #24 - Publish the two-year GitHub Pages site
+
+I created a new `index.md` homepage for the public Ride Knox site and updated `_config.yml` to use the `jekyll-theme-slate` theme.
+
+The public homepage now leads with the 2026 verdict and the 2026 ridership recovery chart.
+
+The homepage also links directly to:
+
+- the 2025 analysis report;
+- the 2026 operations memo;
+- the 2026 public release note;
+- the project README.
+
+The site title and description were updated to reflect the two-year 2025-2026 analysis.
+
+After the pull request was merged, I tested the live GitHub Pages site in a browser.
+
+I confirmed that:
+
+- the new Slate theme loaded;
+- the 2026 verdict appeared near the top of the page;
+- the 2026 recovery chart loaded correctly;
+- the 2025 report link opened;
+- the 2026 memo link opened;
+- the 2026 release note link opened;
+- the README link opened;
+- no broken-image icons were visible.
+
+### Q-D1
+
+Before this update, the GitHub Pages site mainly reflected the README and the earlier single-year presentation. There was no dedicated `index.md` homepage for the two-year release.
+
+Adding `index.md` changed what visitors see first. The site now opens with a public-facing 2025-2026 homepage that emphasizes the 2026 verdict, supporting chart, and links to the main analysis documents.
