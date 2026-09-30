@@ -241,7 +241,6 @@ I updated the README with a two-year headline, placed a 2026 chart near the top,
 
 I committed and pushed the first README contribution:
 cb6b024 Rewrite README for two-year Ride Knox story
-```
 
 [Riley]
 I created a second clone:
