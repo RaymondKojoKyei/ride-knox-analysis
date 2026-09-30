@@ -374,19 +374,20 @@ Adding `index.md` changed what visitors see first. The site now opens with a pub
 
 The public release can be traced through the repository history. Five important changes are listed below with the date and a plain-English explanation of what each change accomplished.
 
-1. **2026-09-29 — `ab14d11 Write 2026 public release note`**  
+
+1. **2026-09-29 — `ab14d11 Write 2026 public release note`**
    Added the stakeholder-facing release note explaining the updated public analysis, the main 2026 findings, one caveat, and where readers should begin.
 
-2. **2026-09-29 — `eddaf7c Publish two-year Ride Knox homepage`**  
+2. **2026-09-29 — `eddaf7c Publish two-year Ride Knox homepage`**
    Created the new public homepage that leads with the 2026 verdict, recovery chart, and links to the main supporting documents.
 
-3. **2026-09-29 — `cb6b024 Rewrite README for two-year Ride Knox story`**  
+3. **2026-09-29 — `cb6b024 Rewrite README for two-year Ride Knox story`**
    Reframed the project from a single-year analysis into a clearer 2025-2026 story and brought the 2026 analysis into the main project narrative.
 
-4. **2026-09-29 — `5da7304 Document reproducibility workflow`**  
+4. **2026-09-29 — `5da7304 Document reproducibility workflow`**
    Added instructions explaining the required data files, package installation, and how to run both the 2025 and 2026 notebooks.
 
-5. **2026-09-29 — `7f6d2bb Remove leftover README conflict marker`**  
+5. **2026-09-29 — `7f6d2bb Remove leftover README conflict marker`**
    Corrected a visible collaboration artifact that remained after the shared-branch conflict exercise so the public README was clean.
 
 ### Why the public page is auditable
