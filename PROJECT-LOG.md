@@ -39,7 +39,7 @@ I confirmed that the working tree is clean and that my Assignment 5–6 history 
 
 ## Part A — Release Plan
 
-I translated the project brief into seven GitHub issues so the work could be completed in a clear dependency order.
+I translated the project brief into eight GitHub issues so the work could be completed in a clear dependency order.
 
 ### Issue plan
 
@@ -51,6 +51,7 @@ I translated the project brief into seven GitHub issues so the work could be com
 #23 Co-author the two-year README with Riley
 #24 Publish the two-year GitHub Pages site
 #25 Write the 2026 release note and audit history
+#26 Document release audit history
 ```
 
 The issues are cross-linked so later work depends on the earlier safety and organization steps.
