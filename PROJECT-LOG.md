@@ -273,11 +273,13 @@ CONFLICT (content): Merge conflict in README.md
 Automatic merge failed; fix conflicts and then commit the result.
 
 The conflict markers showed the two competing README headlines:
-<<<<<<< HEAD
+> <<<<<<< HEAD
 # Ride Knox Ridership and Station Performance: 2025-2026
-=======
+> =======
 # Ride Knox 2025-2026: Ridership Recovery, Station Pressure, and Operations
->>>>>>> 7a258b49922f8da00e9408c4d58adb82422e7da8
+> >>>>>>> 7a258b49922f8da00e9408c4d58adb82422e7da8
+
+The conflict markers are reproduced below with a leading `>` so Git does not mistake the documented evidence for an unresolved conflict:
 
 In this conflict, HEAD represented Riley's local version. The lower section represented the newer remote version that Raymond had already pushed.
 The conflict-resolution work was committed as:
