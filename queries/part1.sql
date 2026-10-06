@@ -1,0 +1,3 @@
+-- Part 1: The Relational Model & Keys
+-- No SQL queries are required for TODO 1a–1c.
+-- Answers are based on the schema inspected in Part 0 and are recorded in SQL-LOG.md.
