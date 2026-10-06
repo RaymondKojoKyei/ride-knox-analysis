@@ -5,3 +5,4 @@ stations_2026.xlsx
 ride_knox_api_token.txt
 .ipynb_checkpoints/
 scratch/
+ride_knox.db
