@@ -582,9 +582,9 @@ T0051651 | S06              | 2025-03-23 08:44:56 | 0.05
 
 Pull request URL:
 
-**PASTE THE NEW FINAL ASSIGNMENT PR URL HERE**
+https://github.com/RaymondKojoKyei/ride-knox-analysis/pull/38
 
-The Assignment 7 work was completed on the required `feature/sql-week7-queries` branch, pushed to GitHub, and merged into `main` through a pull request.
+The Assignment 7 work was completed on a feature branch, pushed to GitHub, and merged into `main` through a pull request.
 
 ### Q9e
 
