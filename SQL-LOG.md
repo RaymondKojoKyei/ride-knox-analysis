@@ -660,7 +660,7 @@ I first queried the `stations` table to identify station IDs whose station names
 
 ### Q10c
 
-A SQL `JOIN` would remove the need to copy the station IDs manually. A join can directly connect `trips.start_station_id` to `stations.station_id`. The upcoming module introduces joins for combining related tables.
+A SQL JOIN would remove the need to copy the station IDs manually. A join can directly connect trips.start_station_id to stations.station_id. JOINs are introduced in Module 8: SQL II — Combining & Aggregating Data with SQL.
 
 ---
 
