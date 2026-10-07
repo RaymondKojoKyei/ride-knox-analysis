@@ -1,4 +1,3 @@
-```sql
 -- TODO 6a: Stations whose name contains Ave
 SELECT station_id,
        station_name

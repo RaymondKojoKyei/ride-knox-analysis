@@ -1,4 +1,3 @@
-```sql
 -- TODO 4a: Return all stations in Fort Sanders
 SELECT *
 FROM stations

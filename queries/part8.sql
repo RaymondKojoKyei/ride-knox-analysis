@@ -1,4 +1,3 @@
-```sql
 -- TODO 8a: Oldest stations first, breaking ties by largest dock count
 SELECT station_id,
        station_name,
