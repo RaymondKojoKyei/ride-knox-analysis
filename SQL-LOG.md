@@ -651,11 +651,18 @@ Bearden            | 468             | 270             | -198         | 12      
 
 ### TODO 9c
 
-Pull request URL:
+Original Assignment 8 pull request:
 
+```text
+https://github.com/RaymondKojoKyei/ride-knox-analysis/pull/39
+
+This is the original Assignment 8 pull request created from the required feature/sql-week8-aggregates branch.
+
+Final correction pull request:
 https://github.com/RaymondKojoKyei/ride-knox-analysis/pull/41
 
-The Assignment 8 work was completed through a feature branch and merged into `main` through a pull request.
+This is the final correction pull request containing the completed SQL log and final updates.
+```
 
 ### Q9d
 
@@ -727,7 +734,7 @@ Fort Sanders gains the most bikes because it has 199 more arrivals than departur
 
 ### Q10c
 
-A neighborhood can have a full-year difference near zero while still have a strong daily imbalance, such as many bikes leaving during the morning and returning later in the day.
+A neighborhood can have a full-year difference near zero while still having a strong daily imbalance, such as many bikes leaving during the morning and returning later in the day.
 
 To detect that pattern, I would derive and group by an `hour_of_day` value from the trip timestamp, such as using `strftime('%H', start_time)` for departures.
 
