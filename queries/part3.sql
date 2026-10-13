@@ -1,12 +1,25 @@
--- TODO 3a: List every distinct neighborhood in stations
-SELECT DISTINCT neighborhood
-FROM stations
-ORDER BY neighborhood;
-
--- TODO 3b: Distinct stations with electric-bike departures in December 2025
-SELECT DISTINCT start_station_id
+-- TODO 3a: Build the wide rider-type by bike-type trip-count table
+SELECT LOWER(rider_type) AS rider_type,
+       SUM(
+           CASE
+               WHEN bike_type = 'classic' THEN 1
+               ELSE 0
+           END
+       ) AS classic,
+       SUM(
+           CASE
+               WHEN bike_type = 'electric' THEN 1
+               ELSE 0
+           END
+       ) AS electric
 FROM trips
-WHERE bike_type = 'electric'
-  AND start_time >= '2025-12-01'
-  AND start_time < '2026-01-01'
-ORDER BY start_station_id;
+GROUP BY LOWER(rider_type)
+ORDER BY rider_type;
+
+
+-- TODO 3b: Deliberately violate the SQL grouping rule
+SELECT bike_type,
+       rider_type,
+       COUNT(*) AS trip_count
+FROM trips
+GROUP BY bike_type;

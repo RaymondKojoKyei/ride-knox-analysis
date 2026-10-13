@@ -1,28 +1,21 @@
--- TODO 7a: Trips with no recorded end station
-SELECT trip_id,
-       start_station_id,
-       start_time
-FROM trips
-WHERE end_station_id IS NULL;
-
--- TODO 7b: Naive filter for trips that did not end at Market Square
-SELECT trip_id,
-       start_station_id,
-       end_station_id
-FROM trips
-WHERE end_station_id <> 'S01';
-
--- TODO 7c: Trips that did not end at S01, including trips with no recorded end station
-SELECT trip_id,
-       start_station_id,
-       end_station_id
-FROM trips
-WHERE end_station_id <> 'S01'
-   OR end_station_id IS NULL;
-
--- TODO 7d: South Knoxville trips with no recorded end station
-SELECT trip_id,
-       start_station_id
-FROM trips
-WHERE start_station_id IN ('S14', 'S15', 'S16')
-  AND end_station_id IS NULL;
+-- TODO 7b: Counts Q4 2025 trips ending at valid stations; excludes trips outside Q4, never-docked trips, and unmatched end-station IDs.-- TODO 7a: Rank Q4 2025 arrivals per dock while preserving every station
+-- TODO 7b: Counts trips ending at valid stations during Q4 2025; excludes trips outside Q4, trips without a recorded end station, and unmatched end-station IDs.
+SELECT s.station_name,
+       s.neighborhood,
+       s.docks,
+       COUNT(t.trip_id) AS q4_arrivals,
+       ROUND(
+           1.0 * COUNT(t.trip_id) / s.docks,
+           2
+       ) AS arrivals_per_dock
+FROM stations AS s
+LEFT JOIN trips AS t
+  ON s.station_id = t.end_station_id
+ AND t.end_time >= '2025-10-01'
+ AND t.end_time < '2026-01-01'
+GROUP BY s.station_id,
+         s.station_name,
+         s.neighborhood,
+         s.docks
+ORDER BY arrivals_per_dock DESC,
+         s.station_name ASC;
