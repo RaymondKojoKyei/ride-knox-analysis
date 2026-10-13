@@ -1,4 +1,4 @@
--- TODO 3a: Build the wide rider-type by bike-type trip-count table
+-- TODO 3a: Wide rider-type by bike-type trip-count table
 SELECT LOWER(rider_type) AS rider_type,
        SUM(
            CASE
@@ -16,8 +16,8 @@ FROM trips
 GROUP BY LOWER(rider_type)
 ORDER BY rider_type;
 
-
--- TODO 3b: Deliberately violate the SQL grouping rule
+-- TODO 3b: Deliberately violate the grouping rule
+-- This query is intentionally wrong for this exercise.
 SELECT bike_type,
        rider_type,
        COUNT(*) AS trip_count

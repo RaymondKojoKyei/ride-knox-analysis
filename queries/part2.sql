@@ -5,8 +5,7 @@ FROM trips
 GROUP BY start_station_id
 ORDER BY trip_count DESC;
 
-
--- TODO 2b: Show the six busiest hours of the day
+-- TODO 2b: Show the six busiest hours
 SELECT strftime('%H', start_time) AS hour_of_day,
        COUNT(*) AS trip_count
 FROM trips
@@ -14,8 +13,7 @@ GROUP BY strftime('%H', start_time)
 ORDER BY trip_count DESC
 LIMIT 6;
 
-
--- TODO 2c: Count trips and average duration by bike type and normalized rider type
+-- TODO 2c: Trip count and average duration by bike and normalized rider type
 SELECT bike_type,
        LOWER(rider_type) AS rider_type,
        COUNT(*) AS trip_count,
@@ -29,8 +27,7 @@ GROUP BY bike_type,
 ORDER BY rider_type,
          bike_type;
 
-
--- TODO 2d: Repeat TODO 2c without normalizing rider type
+-- TODO 2d: Repeat without normalizing rider type
 SELECT bike_type,
        rider_type,
        COUNT(*) AS trip_count,

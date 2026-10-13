@@ -1,5 +1,4 @@
--- TODO 7b: Counts Q4 2025 trips ending at valid stations; excludes trips outside Q4, never-docked trips, and unmatched end-station IDs.-- TODO 7a: Rank Q4 2025 arrivals per dock while preserving every station
--- TODO 7b: Counts trips ending at valid stations during Q4 2025; excludes trips outside Q4, trips without a recorded end station, and unmatched end-station IDs.
+-- TODO 7a/7b: Rank Q4 2025 arrivals per dock while preserving all stations; count valid Q4 arrivals and exclude trips outside Q4, missing end stations, and unmatched end-station IDs.
 SELECT s.station_name,
        s.neighborhood,
        s.docks,
