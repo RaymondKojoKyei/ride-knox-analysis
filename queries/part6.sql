@@ -1,4 +1,4 @@
--- TODO 6a: Find end-station values with no matching row in stations
+-- TODO 6a: End-station values with no matching station
 SELECT t.end_station_id,
        COUNT(*) AS trip_count
 FROM trips AS t
@@ -8,7 +8,6 @@ WHERE s.station_id IS NULL
 GROUP BY t.end_station_id
 ORDER BY trip_count DESC;
 
-
 -- TODO 6b: Check for duplicate station names
 SELECT station_name,
        COUNT(*) AS station_count
@@ -16,8 +15,7 @@ FROM stations
 GROUP BY station_name
 HAVING COUNT(*) > 1;
 
-
--- TODO 6c Version 1: Put January late-night conditions in WHERE
+-- TODO 6c Version 1: Conditions in WHERE
 SELECT s.station_id,
        s.station_name,
        COUNT(t.trip_id) AS late_night_trips
@@ -31,8 +29,7 @@ GROUP BY s.station_id,
          s.station_name
 ORDER BY s.station_id;
 
-
--- TODO 6c Version 2: Put January late-night conditions in the LEFT JOIN ON clause
+-- TODO 6c Version 2: Conditions in ON
 SELECT s.station_id,
        s.station_name,
        COUNT(t.trip_id) AS late_night_trips
@@ -46,8 +43,7 @@ GROUP BY s.station_id,
          s.station_name
 ORDER BY s.station_id;
 
-
--- TODO 6d: Find stations with fewer than two late-night January trips
+-- TODO 6d: Stations with fewer than two late-night January trips
 SELECT s.station_name,
        s.neighborhood,
        COUNT(t.trip_id) AS late_night_trips

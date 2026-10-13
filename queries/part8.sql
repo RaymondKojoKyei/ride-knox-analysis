@@ -1,4 +1,4 @@
--- TODO 8a: Find neighborhoods above the average neighborhood departure count
+-- TODO 8a: Neighborhoods above average neighborhood departure count
 SELECT s.neighborhood,
        COUNT(*) AS trip_count
 FROM trips AS t
@@ -18,8 +18,7 @@ HAVING COUNT(*) > (
 )
 ORDER BY trip_count DESC;
 
-
--- TODO 8b: Summarize monthly trip counts using a subquery in FROM
+-- TODO 8b: Monthly summary using a subquery in FROM
 SELECT ROUND(AVG(monthly_count), 1) AS avg_monthly_trips,
        MIN(monthly_count) AS min_monthly_trips,
        MAX(monthly_count) AS max_monthly_trips
@@ -32,8 +31,7 @@ FROM (
     GROUP BY strftime('%Y-%m', start_time)
 ) AS monthly_counts;
 
-
--- TODO 8c: Rewrite the monthly summary using a CTE
+-- TODO 8c: Monthly summary using a CTE
 WITH monthly_counts AS (
     SELECT strftime('%Y-%m', start_time) AS month,
            COUNT(*) AS monthly_count
@@ -47,8 +45,7 @@ SELECT ROUND(AVG(monthly_count), 1) AS avg_monthly_trips,
        MAX(monthly_count) AS max_monthly_trips
 FROM monthly_counts;
 
-
--- TODO 8d: Find the five stations with the fewest trips per dock using two CTEs
+-- TODO 8d: Five stations with the fewest trips per dock
 WITH trip_counts AS (
     SELECT start_station_id AS station_id,
            COUNT(*) AS trip_count

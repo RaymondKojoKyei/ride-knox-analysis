@@ -1,5 +1,4 @@
 -- TODO 9a: Create the shared completed_trips view
-
 CREATE VIEW completed_trips AS
 SELECT trip_id,
        start_time,

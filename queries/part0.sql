@@ -1,4 +1,4 @@
--- TODO 0a: Run the four-count database diagnostic
+-- TODO 0a: Four-count database diagnostic
 SELECT COUNT(*) AS total_trips,
        COUNT(end_station_id) AS recorded_end_station_count,
        COUNT(DISTINCT start_station_id) AS distinct_start_stations,

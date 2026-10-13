@@ -1,4 +1,8 @@
--- TODO 9b: Compare first-half and second-half casual trips by neighborhood and dock capacity
+-- TODO 9a: Verify the completed_trips view row count
+SELECT COUNT(*) AS completed_trip_count
+FROM completed_trips;
+
+-- TODO 9b: Compare first-half and second-half casual trips by neighborhood
 WITH h1 AS (
     SELECT s.neighborhood,
            COUNT(*) AS h1_casual_trips

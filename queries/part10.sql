@@ -1,4 +1,4 @@
--- TODO 10a: Measure seasonal swing using monthly completed-trip counts
+-- TODO 10a: Neighborhood seasonal swing
 WITH monthly_counts AS (
     SELECT s.neighborhood,
            c.month,
@@ -20,8 +20,7 @@ FROM monthly_counts
 GROUP BY neighborhood
 ORDER BY busiest_to_quietest_ratio DESC;
 
-
--- TODO 10b: Compare full-year departures and arrivals by neighborhood
+-- TODO 10b: Full-year departures versus arrivals by neighborhood
 WITH departures AS (
     SELECT s.neighborhood,
            COUNT(*) AS total_departures
