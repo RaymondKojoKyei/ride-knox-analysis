@@ -651,6 +651,8 @@ Bearden            | 468             | 270             | -198         | 12      
 
 ### TODO 9c
 
+### TODO 9c
+
 Original Assignment 8 pull request:
 
 ```text
@@ -659,6 +661,7 @@ https://github.com/RaymondKojoKyei/ride-knox-analysis/pull/39
 This is the original Assignment 8 pull request created from the required feature/sql-week8-aggregates branch.
 
 Final correction pull request:
+
 https://github.com/RaymondKojoKyei/ride-knox-analysis/pull/41
 
 This is the final correction pull request containing the completed SQL log and final updates.
