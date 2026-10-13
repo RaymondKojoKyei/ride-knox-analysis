@@ -653,9 +653,7 @@ Bearden            | 468             | 270             | -198         | 12      
 
 Pull request URL:
 
-```text
-PASTE THE NEW FINAL PR URL HERE
-```
+https://github.com/RaymondKojoKyei/ride-knox-analysis/pull/41
 
 The Assignment 8 work was completed through a feature branch and merged into `main` through a pull request.
 
