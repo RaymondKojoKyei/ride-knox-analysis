@@ -1,4 +1,4 @@
-# DATA 501 — Assignment 7 SQL Log
+# DATA 501 — Assignment 8 SQL Log
 
 **Name:** Raymond Kojo Kyei  
 **NetID:** rkyei  
@@ -6,687 +6,381 @@
 
 ## Part 0
 
-### TODO 0a
+### Q0c
 
-Tables:
+`COUNT(DISTINCT start_station_id)` is a data-quality diagnostic because the
+number of distinct start-station IDs can be compared with the 24 valid stations
+in the stations table. An extra ID indicates a trip referencing a station that
+is not in the station directory.
 
-```text
-stations
-trips
-```
-
-Trips schema:
-
-```sql
-CREATE TABLE trips (
-    trip_id TEXT PRIMARY KEY,
-    start_time TEXT NOT NULL,
-    end_time TEXT,
-    start_station_id TEXT REFERENCES stations(station_id),
-    end_station_id TEXT REFERENCES stations(station_id),
-    rider_type TEXT,
-    bike_type TEXT
-);
-```
-
-### TODO 0b
-
-```text
-cid | name             | type    | notnull | dflt_value | pk
-0   | station_id       | TEXT    | 0       | NULL       | 1
-1   | station_name     | TEXT    | 1       | NULL       | 0
-2   | neighborhood     | TEXT    | 0       | NULL       | 0
-3   | latitude         | REAL    | 0       | NULL       | 0
-4   | longitude        | REAL    | 0       | NULL       | 0
-5   | docks            | INTEGER | 0       | NULL       | 0
-6   | year_installed   | INTEGER | 0       | NULL       | 0
-```
-
-Primary key: `station_id`
-
-### TODO 0c
-
-I created `SQL-LOG.md` and the `queries/` folder and committed them early with the commit message:
-
-```text
-Set up Assignment 7 SQL log and queries
-```
-
-### Q0
-
-`PRAGMA table_info(stations)` showed that `station_id` is defined as the primary key. Opening `stations.xlsx` in Excel would show the column values, but it would not show that database constraint.
-
----
+`COUNT(DISTINCT rider_type)` is also a diagnostic. Ride Knox has two real
+2025 rider categories, but inconsistent capitalization or spelling creates
+additional distinct values.
 
 ## Part 1
 
-### TODO 1a
+### Q1e
 
-Primary keys:
+I would report the cleaned average from TODO 1c because it excludes impossible
+and implausible trip durations.
 
-- `trips.trip_id` — primary key of the `trips` table
-- `stations.station_id` — primary key of the `stations` table
-
-Foreign keys:
-
-- `trips.start_station_id` → `stations.station_id`
-- `trips.end_station_id` → `stations.station_id`
-
-### TODO 1b
-
-The database stores station information once in the `stations` table instead of repeating `start_station_name` in every trip row. Trips keep only the station ID, which links back to the station record. This prevents the inconsistent station-name problem from Modules 2–3, where the same station could appear with different capitalization or extra spaces in the flat CSV.
-
-### TODO 1c
-
-Only one row needs to change: the row for `S15` in the `stations` table. Its latitude and longitude can be updated once there. In a flat CSV where station information is repeated across trip rows, the same station information could have to be changed in many rows, creating a risk of inconsistent values.
-
-### Q1d
-
-The `PRIMARY KEY` constraint on `trips.trip_id` rejected the 600 duplicate rows because a primary key must be unique. This is better than using `drop_duplicates()` after loading because the database prevents duplicate trip IDs from entering the table in the first place and continuously enforces that data-integrity rule.
-
----
+I would add this note: "Average duration is calculated only from trips lasting
+between 1 minute and 6 hours."
 
 ## Part 2
 
-### TODO 2a
-
-First 5 rows:
-
-```text
-station_id | neighborhood       | latitude | longitude
-S01        | Downtown           | 35.9649  | -83.9197
-S02        | Downtown           | 35.9662  | -83.9184
-S03        | Downtown           | 35.9636  | -83.9186
-S04        | Old City           | 35.9721  | -83.9151
-S05        | World's Fair Park  | 35.9622  | -83.9265
-```
-
-### TODO 2b
-
-First 5 rows:
-
-```text
-station_id | station_name           | year_installed | age_years
-S01        | Market Square          | 2022           | 4
-S02        | Gay Street & Union Ave | 2022           | 4
-S03        | Krutch Park            | 2022           | 4
-S04        | Old City - Jackson Ave | 2022           | 4
-S05        | World's Fair Park      | 2022           | 4
-```
-
-### TODO 2c
-
-First 5 rows:
-
-```text
-trip_id  | start_time          | duration_hr
-T0057984 | 2025-01-01 00:06:48 | 0.21
-T0073896 | 2025-01-01 00:40:20 | 0.67
-T0206129 | 2025-01-01 00:42:40 | 0.46
-T0163585 | 2025-01-01 00:42:54 | 0.25
-T0094124 | 2025-01-01 01:19:33 | 0.51
-```
-
-### Q2d
-
-No. `age_years` does not become a permanent column in the `stations` table; it exists only in the output of that query. A result set is the temporary table of rows and columns returned by a SQL query.
-
 ### Q2e
 
-Using `SELECT * FROM trips;` would return every column for all 250,000 trips even though the ops team only needs three columns. Selecting only the required columns makes the result smaller, easier to read, and focused on the question being answered.
+TODO 2d returned 12 rows rather than the 4 meaningful combinations in TODO 2c.
+Eight of those rows represent capitalization variants rather than genuinely
+different rider types.
 
----
+`GROUP BY` groups rows according to the actual stored **value**, so values that
+differ in capitalization are treated as separate groups.
+
+### Q2f
+
+The wide version would have one row for each normalized rider type and separate
+columns for classic-bike and electric-bike trip counts.
+
+In pandas, this type of wide output can be produced with `pivot_table()`.
+
 
 ## Part 3
 
-### TODO 3a
-
-```text
-neighborhood
-Bearden
-Downtown
-East Knoxville
-Fort Sanders
-North Knoxville
-Old City
-Sequoyah Hills
-South Knoxville
-UT Ag Campus
-UT Campus
-West Knoxville
-World's Fair Park
-```
-
-### TODO 3b
-
-Row count: 25
-
-Last 3 rows:
-
-```text
-start_station_id
-S23
-S24
-S99
-```
-
 ### Q3c
 
-The station ID is `S99`. It appears in the `trips` table but does not have a matching row in the `stations` table. SQLite foreign-key enforcement was not active when the data were loaded, so that unmatched station reference was allowed.
+SQLite produced a clean-looking result rather than an error. The `rider_type`
+shown for each bike-type group is simply a value SQLite selected from a row in
+that group; it is not a meaningful summary of all rows in the group.
+
+A reader could easily mistake it for a valid grouped value because SQLite does
+not visibly warn that the grouping rule was violated.
 
 ### Q3d
 
-A database can still contain inconsistent versions of what should be the same category unless rules are added to prevent them. `DISTINCT` shows the values that actually exist in the data, so categorical values should be inspected before they are used in filters.
+The grouping rule is that every selected column must either be included in the
+`GROUP BY` or be produced by an aggregate function.
 
----
+PostgreSQL would reject TODO 3b because `rider_type` is neither grouped nor
+aggregated. I prefer PostgreSQL's behavior because an explicit error is safer
+than receiving a plausible-looking but logically invalid result.
 
 ## Part 4
 
-### TODO 4a
+### Q4e
 
-```text
-station_id | station_name              | neighborhood | latitude | longitude | docks | year_installed
-S11        | Cumberland Ave & 17th St  | Fort Sanders | 35.9575  | -83.9330  | 16    | 2022
-S12        | Fort Sanders - Laurel Ave | Fort Sanders | 35.9601  | -83.9331  | 12    | 2023
-```
+`WHERE` is evaluated before `GROUP BY`, so at the point where the WHERE clause
+runs, the grouped counts do not yet exist. Aggregate conditions therefore
+belong in `HAVING`, which is evaluated after grouping.
 
-### TODO 4b
+### Q4f
 
-```text
-station_id | station_name       | docks
-S01        | Market Square      | 20
-S05        | World's Fair Park  | 20
-S06        | Hodges Library     | 24
-S08        | Student Union - UT | 24
-```
+In TODO 4b, `bike_type = 'electric'` and the October date conditions filter
+individual trip rows, so they belong in `WHERE`.
 
-### TODO 4c
-
-```text
-station_id | station_name             | neighborhood | latitude | longitude | docks | year_installed
-S06        | Hodges Library           | UT Campus    | 35.9553  | -83.9264  | 24    | 2022
-S08        | Student Union - UT       | UT Campus    | 35.9560  | -83.9295  | 24    | 2022
-S09        | Neyland Stadium          | UT Campus    | 35.9550  | -83.9250  | 16    | 2023
-S11        | Cumberland Ave & 17th St | Fort Sanders | 35.9575  | -83.9330  | 16    | 2022
-```
-
-Row count: 4
-
-### TODO 4d
-
-```text
-station_id | station_name             | neighborhood | latitude | longitude | docks | year_installed
-S06        | Hodges Library           | UT Campus    | 35.9553  | -83.9264  | 24    | 2022
-S07        | The Hill - Ayres Hall    | UT Campus    | 35.9546  | -83.9256  | 12    | 2022
-S08        | Student Union - UT       | UT Campus    | 35.9560  | -83.9295  | 24    | 2022
-S09        | Neyland Stadium          | UT Campus    | 35.9550  | -83.9250  | 16    | 2023
-S11        | Cumberland Ave & 17th St | Fort Sanders | 35.9575  | -83.9330  | 16    | 2022
-```
-
-Row count: 5
-
-### TODO 4e
-
-```text
-station_id | station_name         | neighborhood    | latitude | longitude | docks | year_installed
-S14        | South Waterfront     | South Knoxville | 35.9575  | -83.9130  | 12    | 2023
-S15        | Suttree Landing Park | South Knoxville | 35.9541  | -83.9060  | 10    | 2024
-S16        | Ijams Nature Center  | South Knoxville | 35.9560  | -83.8680  | 10    | 2024
-S20        | Zoo Knoxville        | East Knoxville  | 35.9863  | -83.8880  | 10    | 2024
-S21        | Caswell Park         | East Knoxville  | 35.9760  | -83.8990  | 10    | 2024
-```
-
-### TODO 4f
-
-```text
-station_id | station_name              | docks
-S02        | Gay Street & Union Ave    | 16
-S03        | Krutch Park               | 12
-S04        | Old City - Jackson Ave    | 16
-S07        | The Hill - Ayres Hall     | 12
-S09        | Neyland Stadium           | 16
-S10        | Ag Campus - Morgan Hall   | 12
-S11        | Cumberland Ave & 17th St  | 16
-S12        | Fort Sanders - Laurel Ave | 12
-S14        | South Waterfront          | 12
-S17        | Happy Holler              | 12
-S19        | Broadway & Central        | 12
-S22        | Tyson Park                | 12
-S23        | Bearden - Kingston Pike   | 12
-```
-
-### Q4g
-
-TODO 4c returns 4 rows, while TODO 4d returns 5 rows. TODO 4c correctly answers the ops lead's question because the parentheses make the 16-dock requirement apply to both UT Campus and Fort Sanders stations.
-
-Without parentheses, SQL evaluates `AND` before `OR`. Therefore, TODO 4d includes every UT Campus station regardless of dock count, which is why S07 with only 12 docks appears.
-
-### Q4h
-
-The equivalent condition is:
-
-```sql
-WHERE docks >= 12
-  AND docks <= 16
-```
-
-I would hand a colleague the `BETWEEN 12 AND 16` version because it is shorter and clearly communicates that the dock count must fall within an inclusive range.
-
----
+`HAVING COUNT(*) >= 300` filters the station groups after those trips have been
+grouped. Moving the bike-type condition into HAVING would mix a row-level
+condition with a group-level condition and would make the query less correct
+and less portable even if SQLite happened to return the same result.
 
 ## Part 5
 
-### TODO 5a
+### Q5d
 
-Row count: 23139
+TODO 5b lost ______ rows compared with the 250,000 rows in `trips`.
 
-First 3 rows:
-
-```text
-trip_id  | start_time          | rider_type
-T0089973 | 2025-09-01 00:07:55 | member
-T0244496 | 2025-09-01 00:07:57 | member
-T0004667 | 2025-09-01 00:14:49 | member
-```
-
-### TODO 5b
-
-Row count: 22343
-
-### TODO 5c
-
-Row count: 10912
-
-First 3 rows:
-
-```text
-trip_id  | start_time
-T0241055 | 2025-03-15 00:25:55
-T0179889 | 2025-03-15 00:31:29
-T0134722 | 2025-03-15 00:51:01
-```
-
-### TODO 5d
-
-Exact lowercase match:
-
-```text
-Row count: 14164
-```
-
-Using `LOWER(rider_type) = 'member'`:
-
-```text
-Row count: 14686
-```
+Rows disappear for two reasons: some trips have `NULL` for `end_station_id`,
+and some non-NULL end-station IDs do not have a matching row in `stations`.
+An inner join keeps only rows for which the join key matches.
 
 ### Q5e
 
-TODO 5b lost 796 trips compared with TODO 5a. The reason is that `BETWEEN '2025-09-01' AND '2025-09-30'` uses `'2025-09-30'` as the upper-bound text. A timestamp such as `'2025-09-30 18:04:11'` is greater than the shorter text value `'2025-09-30'`, so it is excluded. The half-open range correctly includes every time on September 30.
+With the provided Ride Knox schema, the two tables do not appear to share an
+identically named column, so none of the columns in these queries is actually
+ambiguous in SQLite. I still use the required `t.` and `s.` prefixes because
+they make the source table of every column explicit and keep join queries
+readable.
+
+If two joined tables did contain the same column name and I referred to it
+without a table prefix, the database would report an ambiguous-column error.
 
 ### Q5f
 
-The naive version missed 522 member trips. This is not a rounding issue because real records were excluded from the answer, so the query gives an incorrect count of member trips.
+No. `station_name` is not added to the `trips` table. The JOIN constructs a
+temporary result by matching each trip's station ID with the corresponding
+station row and returning columns from both tables.
 
----
+That is the benefit of keeping the trip and station information normalized in
+separate tables.
+
 
 ## Part 6
 
-### TODO 6a
-
-```text
-station_id | station_name
-S02        | Gay Street & Union Ave
-S04        | Old City - Jackson Ave
-S11        | Cumberland Ave & 17th St
-S12        | Fort Sanders - Laurel Ave
-```
-
-### TODO 6b
-
-```text
-station_id | station_name            | neighborhood
-S20        | Zoo Knoxville           | East Knoxville
-S21        | Caswell Park            | East Knoxville
-S22        | Tyson Park              | West Knoxville
-S23        | Bearden - Kingston Pike | Bearden
-S24        | Sequoyah Hills Park     | Sequoyah Hills
-```
-
-### TODO 6c
-
-```text
-station_id | neighborhood
-S14        | South Knoxville
-S15        | South Knoxville
-S16        | South Knoxville
-S17        | North Knoxville
-S18        | North Knoxville
-S19        | North Knoxville
-S20        | East Knoxville
-S21        | East Knoxville
-S22        | West Knoxville
-```
-
-### TODO 6d
-
-```text
-station_name       | neighborhood    | docks
-South Waterfront   | South Knoxville | 12
-Happy Holler       | North Knoxville | 12
-Broadway & Central | North Knoxville | 12
-```
-
 ### Q6e
 
-In SQLite, `LIKE` is normally case-insensitive for ASCII text, so `%park%` can match the same rows as `%Park%`. PostgreSQL's `LIKE` is case-sensitive, so the identical query would not necessarily return the same rows.
+Version 2 is correct because the ops lead asked for all 24 stations, including
+stations with zero matching trips.
 
-If I mean case-insensitive matching in PostgreSQL, I would use:
+In Version 1, a station with no matching trip has NULL values on the trips side
+of the LEFT JOIN. The date and hour comparisons in the WHERE clause therefore
+evaluate to **unknown**, and WHERE removes those rows. Putting the conditions in
+the ON clause preserves the station and allows its count to remain zero.
 
-```sql
-WHERE station_name ILIKE '%park%'
-```
+### Q6f
 
----
+For a station with no matching trips, `COUNT(*)` would still count the preserved
+LEFT JOIN row and report 1. `COUNT(t.trip_id)` ignores the NULL trip ID created
+by the unmatched join and therefore correctly reports 0.
+
 
 ## Part 7
 
-### TODO 7a
+### Q7c
 
-Row count: 3767
+The two rankings are similar because ____________________ appears high in both.
 
-First 3 rows:
+They differ because ____________________ ranks high for arrivals but not for
+departures (or vice versa).
 
-```text
-trip_id  | start_station_id | start_time
-T0168031 | S06              | 2025-01-01 08:17:12
-T0043727 | S12              | 2025-01-01 10:24:35
-T0237204 | S03              | 2025-01-01 16:18:45
-```
+A station that ranks high on arrivals but not departures may be accumulating
+bikes, while a station high on departures but not arrivals may be losing bikes
+and may require rebalancing.
 
-### TODO 7b
+### Q7d
 
-Row count: 223917
+First, the `LEFT JOIN` and the Q4 date conditions in the `ON` clause preserve
+stations with no qualifying arrivals. Changing that logic could silently remove
+zero-arrival stations from the ranking.
 
-### TODO 7c
+Second, multiplying by `1.0` before dividing prevents integer division.
+Removing it could truncate the arrivals-per-dock ratio and distort the ranking.
 
-Row count: 227684
+### Q7c
 
-### TODO 7d
+The two rankings are similar because ____________________ appears high in both.
 
-Row count: 238
+They differ because ____________________ ranks high for arrivals but not for
+departures (or vice versa).
 
-First 3 rows:
-
-```text
-trip_id  | start_station_id
-T0084969 | S16
-T0197506 | S14
-T0238948 | S15
-```
-
-### Q7e
-
-TODO 7c returns 3,767 more rows than TODO 7b. When `end_station_id` is `NULL`, SQL treats the comparison `end_station_id <> 'S01'` as **unknown** rather than true, so those rows do not pass the `WHERE` filter. Adding `OR end_station_id IS NULL` explicitly keeps those 3,767 rows.
-
-### Q7f
-
-I would use TODO 7c if “did not end at Market Square” means every trip that cannot be confirmed as ending at S01, including trips with no recorded end station. However, I would confirm whether the ops lead wants unknown destinations included, because TODO 7b is appropriate if she only wants trips with a known end station that is not S01.
-
----
+A station that ranks high on arrivals but not departures may be accumulating
+bikes, while a station high on departures but not arrivals may be losing bikes
+and may require rebalancing.
 
 ## Part 8
 
-### TODO 8a
+### Q8f
 
-```text
-station_id | station_name              | docks | year_installed
-S06        | Hodges Library            | 24    | 2022
-S08        | Student Union - UT        | 24    | 2022
-S01        | Market Square             | 20    | 2022
-S05        | World's Fair Park         | 20    | 2022
-S02        | Gay Street & Union Ave    | 16    | 2022
-S04        | Old City - Jackson Ave    | 16    | 2022
-S11        | Cumberland Ave & 17th St  | 16    | 2022
-S03        | Krutch Park               | 12    | 2022
-S07        | The Hill - Ayres Hall     | 12    | 2022
-S09        | Neyland Stadium           | 16    | 2023
-S10        | Ag Campus - Morgan Hall   | 12    | 2023
-S12        | Fort Sanders - Laurel Ave | 12    | 2023
-S14        | South Waterfront          | 12    | 2023
-S17        | Happy Holler              | 12    | 2023
-S22        | Tyson Park                | 12    | 2023
-S13        | Second Creek Greenway     | 10    | 2023
-S19        | Broadway & Central        | 12    | 2024
-S15        | Suttree Landing Park      | 10    | 2024
-S16        | Ijams Nature Center       | 10    | 2024
-S18        | Fourth & Gill             | 10    | 2024
-S20        | Zoo Knoxville             | 10    | 2024
-S21        | Caswell Park              | 10    | 2024
-S23        | Bearden - Kingston Pike   | 12    | 2025
-S24        | Sequoyah Hills Park       | 10    | 2025
-```
-
-### TODO 8b
-
-```text
-station_id | station_name             | docks | year_installed
-S04        | Old City - Jackson Ave   | 16    | 2022
-S11        | Cumberland Ave & 17th St | 16    | 2022
-S03        | Krutch Park              | 12    | 2022
-S07        | The Hill - Ayres Hall    | 12    | 2022
-S09        | Neyland Stadium          | 16    | 2023
-```
-
-### TODO 8c
-
-```text
-station_name            | neighborhood    | year_installed
-Bearden - Kingston Pike | Bearden         | 2025
-Sequoyah Hills Park     | Sequoyah Hills  | 2025
-Suttree Landing Park    | South Knoxville | 2024
-```
-
-### Q8d
-
-The query is wrong for two reasons. First, it does not select the `docks` column, so it does not show station size. Second, it has no `ORDER BY`, so SQL is not instructed to return the stations with the largest dock counts.
-
-A correct query is:
+I would leave both CTE definitions in place and temporarily replace the final
+SELECT with:
 
 ```sql
-SELECT station_name,
-       docks
-FROM stations
-ORDER BY docks DESC
-LIMIT 3;
-```
+SELECT *
+FROM trip_counts;
 
----
+## Part 9
+
+### TODO 9c
+
+Pull request URL:
+
+https://github.com/RaymondKojoKyei/ride-knox-analysis/pull/39
+
+### Q9d
+
+The two orderings [do / do not] agree.
+
+The change-per-dock ranking better answers the ops lead's question because she
+asked about ridership loss relative to installed equipment. Dividing by dock
+capacity changes the recommendation by distinguishing a large raw decline at a
+large-capacity neighborhood from the same decline at a much smaller network
+footprint.
+
+### Q9e
 
 ## Part 9
 
 ### TODO 9a
 
-Query:
+CREATE VIEW statement:
 
 ```sql
+CREATE VIEW completed_trips AS
 SELECT trip_id,
-       start_station_id,
        start_time,
-       ROUND((julianday(end_time) - julianday(start_time)) * 24, 2) AS duration_hr
+       start_station_id,
+       end_station_id,
+       LOWER(rider_type) AS rider_type,
+       bike_type,
+       ROUND(
+           (julianday(end_time) - julianday(start_time)) * 24 * 60,
+           1
+       ) AS duration_min,
+       strftime('%Y-%m', start_time) AS month
 FROM trips
-WHERE LOWER(rider_type) = 'member'
-  AND bike_type = 'classic'
-  AND start_station_id IN ('S06', 'S07', 'S08', 'S09')
-  AND start_time >= '2025-03-15'
-  AND start_time < '2025-04-01'
+WHERE start_station_id <> 'S99'
   AND end_station_id IS NOT NULL
-ORDER BY duration_hr ASC
-LIMIT 8;
+  AND (julianday(end_time) - julianday(start_time)) * 24 * 60
+      BETWEEN 2 AND 720;
+```
+
+Row-count check:
+
+```sql
+SELECT COUNT(*)
+FROM completed_trips;
 ```
 
 Result:
 
 ```text
-trip_id  | start_station_id | start_time          | duration_hr
-T0163787 | S09              | 2025-03-22 08:51:23 | -0.20
-T0042244 | S08              | 2025-03-20 13:32:03 | 0.03
-T0088672 | S06              | 2025-03-27 17:11:30 | 0.03
-T0124681 | S08              | 2025-03-18 19:35:31 | 0.04
-T0162779 | S09              | 2025-03-15 09:05:45 | 0.05
-T0202713 | S06              | 2025-03-16 06:50:47 | 0.05
-T0101111 | S06              | 2025-03-16 14:43:44 | 0.05
-T0224454 | S08              | 2025-03-16 17:25:21 | 0.05
+244115
 ```
 
 ### TODO 9b
 
-The top row has a negative duration of `-0.20` hours, which is impossible for a real trip. This is the negative-duration data-quality problem from Module 3, caused by an end time that occurs before the start time.
+Query:
+
+```sql
+WITH h1 AS (
+    SELECT s.neighborhood,
+           COUNT(*) AS h1_casual_trips
+    FROM completed_trips AS c
+    JOIN stations AS s
+      ON c.start_station_id = s.station_id
+    WHERE c.rider_type = 'casual'
+      AND c.start_time >= '2025-01-01'
+      AND c.start_time < '2025-07-01'
+    GROUP BY s.neighborhood
+),
+h2 AS (
+    SELECT s.neighborhood,
+           COUNT(*) AS h2_casual_trips
+    FROM completed_trips AS c
+    JOIN stations AS s
+      ON c.start_station_id = s.station_id
+    WHERE c.rider_type = 'casual'
+      AND c.start_time >= '2025-07-01'
+      AND c.start_time < '2026-01-01'
+    GROUP BY s.neighborhood
+),
+capacity AS (
+    SELECT neighborhood,
+           SUM(docks) AS total_docks
+    FROM stations
+    GROUP BY neighborhood
+)
+SELECT capacity.neighborhood,
+       COALESCE(h1.h1_casual_trips, 0) AS h1_casual_trips,
+       COALESCE(h2.h2_casual_trips, 0) AS h2_casual_trips,
+       COALESCE(h2.h2_casual_trips, 0)
+           - COALESCE(h1.h1_casual_trips, 0) AS change_trips,
+       capacity.total_docks,
+       ROUND(
+           1.0 *
+           (
+               COALESCE(h2.h2_casual_trips, 0)
+               - COALESCE(h1.h1_casual_trips, 0)
+           ) / capacity.total_docks,
+           1
+       ) AS change_per_dock
+FROM capacity
+LEFT JOIN h1
+  ON capacity.neighborhood = h1.neighborhood
+LEFT JOIN h2
+  ON capacity.neighborhood = h2.neighborhood
+ORDER BY change_per_dock ASC;
+```
+
+Result:
+
+```text
+neighborhood          | h1_casual_trips | h2_casual_trips | change_trips | total_docks | change_per_dock
+Fort Sanders          | 6527            | 3650            | -2877        | 28          | -102.8
+UT Campus             | 17461           | 10310           | -7151        | 76          | -94.1
+Downtown              | 11228           | 6721            | -4507        | 48          | -93.9
+Old City              | 3258            | 1913            | -1345        | 16          | -84.1
+World's Fair Park     | 4832            | 2791            | -2041        | 30          | -68.0
+UT Ag Campus          | 1686            | 986             | -700         | 12          | -58.3
+West Knoxville        | 1508            | 810             | -698         | 12          | -58.2
+North Knoxville       | 3857            | 2279            | -1578        | 34          | -46.4
+South Knoxville       | 3665            | 2180            | -1485        | 32          | -46.4
+East Knoxville        | 1372            | 841             | -531         | 20          | -26.6
+Sequoyah Hills        | 432             | 251             | -181         | 10          | -18.1
+Bearden               | 468             | 270             | -198         | 12          | -16.5
+```
 
 ### TODO 9c
 
-Corrected query:
-
-```sql
-SELECT trip_id,
-       start_station_id,
-       start_time,
-       ROUND((julianday(end_time) - julianday(start_time)) * 24, 2) AS duration_hr
-FROM trips
-WHERE LOWER(rider_type) = 'member'
-  AND bike_type = 'classic'
-  AND start_station_id IN ('S06', 'S07', 'S08', 'S09')
-  AND start_time >= '2025-03-15'
-  AND start_time < '2025-04-01'
-  AND end_station_id IS NOT NULL
-  AND end_time > start_time
-ORDER BY duration_hr ASC
-LIMIT 8;
-```
-
-Corrected result:
-
-```text
-trip_id  | start_station_id | start_time          | duration_hr
-T0042244 | S08              | 2025-03-20 13:32:03 | 0.03
-T0088672 | S06              | 2025-03-27 17:11:30 | 0.03
-T0124681 | S08              | 2025-03-18 19:35:31 | 0.04
-T0162779 | S09              | 2025-03-15 09:05:45 | 0.05
-T0202713 | S06              | 2025-03-16 06:50:47 | 0.05
-T0101111 | S06              | 2025-03-16 14:43:44 | 0.05
-T0224454 | S08              | 2025-03-16 17:25:21 | 0.05
-T0051651 | S06              | 2025-03-23 08:44:56 | 0.05
-```
-
-### TODO 9d
-
 Pull request URL:
 
-https://github.com/RaymondKojoKyei/ride-knox-analysis/pull/38
+```text
+https://github.com/RaymondKojoKyei/ride-knox-analysis/pull/39
+```
 
-The Assignment 7 work was completed on a feature branch, pushed to GitHub, and merged into `main` through a pull request.
+The Assignment 8 work was completed on the `feature/sql-week8-aggregates`
+branch, pushed to GitHub, and merged into `main` through a pull request.
+
+### Q9d
+
+The raw-change ranking and the change-per-dock ranking do not agree.
+
+By raw change, UT Campus had the largest decline, losing 7,151 casual trips,
+followed by Downtown with a decline of 4,507 trips and Fort Sanders with a
+decline of 2,877 trips. However, when the decline is divided by dock capacity,
+Fort Sanders ranks as the hardest-hit neighborhood at -102.8 trips per dock,
+followed by UT Campus at -94.1 and Downtown at -93.9.
+
+The change-per-dock ranking better answers the ops lead's question because she
+asked which neighborhoods were hit hardest relative to the amount of equipment
+installed there. The denominator accounts for differences in dock capacity, so
+a smaller neighborhood can have a more severe decline relative to the amount
+of equipment it has.
 
 ### Q9e
 
-The logical evaluation order of the query is:
+Logic belongs in a view when it represents a shared and reusable definition
+that multiple analysts or queries should apply consistently. A CTE is better
+for intermediate logic that is specific to one query.
 
-1. `FROM`
-2. `WHERE`
-3. `SELECT`
-4. `ORDER BY`
-5. `LIMIT`
-
-`ORDER BY` can use `duration_hr` because the alias is created by the `SELECT` stage before the rows are sorted.
-
-When I tested a condition using:
-
-```sql
-AND duration_hr > 0
-```
-
-SQLite accepted the alias and ran the query successfully. However, using a `SELECT` alias in `WHERE` is not portable SQL because `WHERE` is logically evaluated before `SELECT`.
-
-A portable version repeats the expression:
-
-```sql
-AND ROUND((julianday(end_time) - julianday(start_time)) * 24, 2) > 0
-```
-
-For this particular data-quality check, the clearer version is:
-
-```sql
-AND end_time > start_time
-```
+The `completed_trips` definition belongs in a view because the same usable-trip
+rules can be reused across different analyses. The view would be the wrong
+choice if different analyses required different definitions of a usable trip,
+such as different duration thresholds or different rules for incomplete trips.
 
 ### Q9f
 
-I would defend `end_station_id IS NOT NULL` most strongly because the ops lead specifically asked for completed trips. Removing that condition would mix never-docked or incomplete trips into the result and would change the meaning of the question rather than simply returning more valid rows.
-
----
+The Part 9b result shows how casual ridership changed between the first and
+second halves of 2025, but it cannot prove that the July 1 price change caused
+the decline. Seasonal demand, weather, station conditions, or other operational
+factors could also influence ridership.
 
 ## Part 10 — Challenge
 
-### TODO 10a
-
-Stations whose names contain `Park`:
-
-```text
-station_id | station_name
-S03        | Krutch Park
-S05        | World's Fair Park
-S15        | Suttree Landing Park
-S21        | Caswell Park
-S22        | Tyson Park
-S24        | Sequoyah Hills Park
-```
-
-Late-night trip row count: **111**
-
-First 6 rows:
-
-```text
-trip_id  | start_time          | start_station_id | bike_type
-T0165811 | 2025-01-07 03:06:27 | S22              | classic
-T0123077 | 2025-01-08 03:49:29 | S03              | classic
-T0136097 | 2025-01-21 02:15:03 | S03              | electric
-T0081707 | 2025-01-23 03:06:35 | S03              | classic
-T0038452 | 2025-02-05 03:26:40 | S05              | electric
-T0121246 | 2025-02-14 02:30:31 | S15              | classic
-```
-
-### TODO 10b
-
-I first queried the `stations` table to identify station IDs whose station names contained `Park`. I then manually copied those station IDs into an `IN` list in the query against the `trips` table. This manually connected information from the two tables through the station ID.
-
 ### Q10c
 
-A SQL JOIN would remove the need to copy the station IDs manually. A join can directly connect trips.start_station_id to stations.station_id. JOINs are introduced in Module 8: SQL II — Combining & Aggregating Data with SQL.
+A neighborhood can have departures and arrivals that balance over the full year
+while still having a strong daily pattern, such as many bikes leaving every
+morning and returning every evening.
 
----
+To detect that pattern, I would derive and group by the hour of day from the
+trip timestamp, for example with `strftime('%H', start_time)`.
 
 ## Reflection + AI Disclosure
 
 ### R1
 
-Several queries in this assignment showed that SQL can run successfully and still return the wrong answer. Unlike a Python traceback, which normally signals that execution failed, an incorrect SQL filter can return valid-looking rows without producing an error. I therefore need to check row counts, inspect returned values, and verify the query logic rather than assuming that a query is correct simply because it runs.
+The WHERE-versus-ON mistake in Part 6c was the hardest for me to spot because
+both queries ran successfully and returned reasonable-looking counts. To catch
+this in future, I would compare the number of grouped rows with the expected
+number of stations and specifically check whether stations with zero matches
+are still present after a LEFT JOIN.
 
 ### R2 — AI Disclosure
 
-I used ChatGPT as a learning and troubleshooting assistant during this assignment. I used it to help explain SQL concepts and syntax, including `DISTINCT`, date filtering, operator precedence, `LIKE`, `NULL`, aliases, sorting, and query structure.
-
-I ran the SQL queries myself in DB Browser for SQLite, checked the outputs against the database, recorded the results, and reviewed the final queries and conclusions before including them in my submission.
-
----
-
-## Final Query Verification
-
-I reviewed the submitted `.sql` files to confirm that each query:
-
-- is preceded by a `-- TODO` comment identifying the task;
-- uses uppercase SQL keywords;
-- places clauses on separate lines for readability;
-- uses single quotes for text values;
-- ends with a semicolon; and
-- runs successfully in DB Browser for SQLite.
-
-No `INSERT`, `UPDATE`, `DELETE`, or `CREATE` statements are included in the submitted `.sql` files.
+I used ChatGPT as a learning and troubleshooting assistant while completing
+this assignment. I used it to help explain aggregation, GROUP BY, HAVING,
+JOINs, LEFT JOIN behavior, CTEs, views, and SQL query structure. I ran the
+queries myself in DB Browser for SQLite, checked the returned results against
+the database and assignment anchors, and reviewed the final queries and
+conclusions before submission.

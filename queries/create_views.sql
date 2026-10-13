@@ -1,5 +1,4 @@
 -- TODO 9a: Create the shared completed_trips view
--- IMPORTANT: Replace TEST_STATION_ID with the test-station ID from the Module 8 materials before running.
 
 CREATE VIEW completed_trips AS
 SELECT trip_id,
@@ -14,7 +13,7 @@ SELECT trip_id,
        ) AS duration_min,
        strftime('%Y-%m', start_time) AS month
 FROM trips
-WHERE start_station_id <> 'TEST_STATION_ID'
+WHERE start_station_id <> 'S99'
   AND end_station_id IS NOT NULL
   AND (julianday(end_time) - julianday(start_time)) * 24 * 60
       BETWEEN 2 AND 720;
