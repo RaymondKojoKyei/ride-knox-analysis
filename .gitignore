@@ -2,7 +2,11 @@ trips_2025.csv
 stations.xlsx
 trips_2026_h1.csv
 stations_2026.xlsx
+trips_2026_07.csv
 ride_knox_api_token.txt
 .ipynb_checkpoints/
 scratch/
 ride_knox.db
+ride_knox_v2.db
+ride_knox_work.db
+.idea/
