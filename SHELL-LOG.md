@@ -750,9 +750,109 @@ Everything up-to-date
 
 ---
 
-## Part 10 — Optional Challenge
+## Part 10 — Optional Challenge (+5 extra credit)
 
-Not attempted. Part 10 is optional extra credit; Parts 0–9 and the required reflection are complete.
+### C1
+
+Ride Knox wants to identify stations that send out more bikes than they receive. I used one `awk` command with two associative arrays: `dep[]` for departures and `arr[]` for arrivals. The command excludes `S99`, and a blank `end_station_id` is not counted as an arrival.
+
+```bash
+$ awk -F',' '
+NR>1 {
+  if ($4 != "" && $4 != "S99") dep[$4]++
+  if ($6 != "" && $6 != "S99") arr[$6]++
+}
+END {
+  max1=max2=max3=-999999
+  min1=min2=min3=999999
+
+  for (s in dep) {
+    n=dep[s]-(arr[s]+0)
+
+    if (n > max1) {
+      max3=max2; ms3=ms2
+      max2=max1; ms2=ms1
+      max1=n; ms1=s
+    } else if (n > max2) {
+      max3=max2; ms3=ms2
+      max2=n; ms2=s
+    } else if (n > max3) {
+      max3=n; ms3=s
+    }
+
+    if (n < min1) {
+      min3=min2; ns3=ns2
+      min2=min1; ns2=ns1
+      min1=n; ns1=s
+    } else if (n < min2) {
+      min3=min2; ns3=ns2
+      min2=n; ns2=s
+    } else if (n < min3) {
+      min3=n; ns3=s
+    }
+  }
+
+  for (s in arr) {
+    if (!(s in dep)) {
+      n=-arr[s]
+
+      if (n > max1) {
+        max3=max2; ms3=ms2
+        max2=max1; ms2=ms1
+        max1=n; ms1=s
+      } else if (n > max2) {
+        max3=max2; ms3=ms2
+        max2=n; ms2=s
+      } else if (n > max3) {
+        max3=n; ms3=s
+      }
+
+      if (n < min1) {
+        min3=min2; ns3=ns2
+        min2=min1; ns2=ns1
+        min1=n; ns1=s
+      } else if (n < min2) {
+        min3=min2; ns3=ns2
+        min2=n; ns2=s
+      } else if (n < min3) {
+        min3=n; ns3=s
+      }
+    }
+  }
+
+  print "largest net outflow:"
+  print ms1, dep[ms1]+0, arr[ms1]+0, max1
+  print ms2, dep[ms2]+0, arr[ms2]+0, max2
+  print ms3, dep[ms3]+0, arr[ms3]+0, max3
+
+  print "largest net inflow:"
+  print ns1, dep[ns1]+0, arr[ns1]+0, min1
+  print ns2, dep[ns2]+0, arr[ns2]+0, min2
+  print ns3, dep[ns3]+0, arr[ns3]+0, min3
+}' trips_2025.csv
+largest net outflow:
+S08 25044 24501 543
+S06 26112 25584 528
+S01 22656 22377 279
+largest net inflow:
+S21 2843 2921 -78
+S18 4691 4715 -24
+S07 14177 14192 -15
+```
+
+The three stations with the largest net outflow are **S08 (+543)**, **S06 (+528)**, and **S01 (+279)**. The three stations with the largest net inflow are **S21 (-78)**, **S18 (-24)**, and **S07 (-15)**. A positive value means departures exceeded arrivals; a negative value means arrivals exceeded departures.
+
+### C2
+
+For Hodges Library (`S06`), the Bash calculation gives a net outflow of **528**, while Module 8 reported **581** from SQL.
+
+There are two reasons for the difference:
+
+1. **The row-cleaning rules are different.** Module 8's cleaned trip view excluded whole rows with a missing `end_station_id` and excluded trips with implausible durations outside the accepted range. This Bash challenge works directly on the raw CSV. It prevents a blank `end_station_id` from becoming an arrival, but it still counts the departure from that row, and it does not apply the Module 8 duration filter.
+
+2. **The raw file contains exact duplicate rows, while the database does not.** Part 6 showed that `trips_2025.csv` contains **600 repeated trip IDs representing exact duplicate rows**, so the raw file has 250,600 data rows but only 250,000 unique rows. The SQL database used the deduplicated 250,000-trip version. Therefore the Bash calculation can count duplicate departures and arrivals that are absent from the database.
+
+These two differences explain why the raw-file result for S06 is close to, but not identical to, the Module 8 SQL result.
 
 ---
 
@@ -768,4 +868,4 @@ Counting month-by-category combinations in Part 9 would be faster and clearer fo
 
 ### R3 — AI Disclosure
 
-I used ChatGPT to help interpret the Assignment 10 instructions, check the structure of Bash pipelines, and explain why some commands can run successfully while answering the wrong question. I ran the Bash commands against the course files, checked the results against the assignment anchors, and reviewed the final commands, outputs, and conclusions before submission.
+I used ChatGPT to help interpret the Assignment 10 instructions, check the structure of Bash pipelines, explain why some commands can run successfully while answering the wrong question, and review the optional Part 10 challenge. I ran the Bash commands against the course files, checked the results against the assignment anchors and prior Module 8 results, and reviewed the final commands, outputs, and conclusions before submission.
