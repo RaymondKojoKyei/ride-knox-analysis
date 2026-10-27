@@ -4,7 +4,7 @@
 **NetID:** rkyei  
 **Terminal used:** Git Bash in VS Code on Windows
 
-> The commands and analytical outputs below were checked against the Ride Knox files used for this assignment. Where a local Git/GitHub result was not captured in the terminal transcript, it is marked clearly so it can be replaced with the exact output before submission.
+> The commands and analytical outputs below were checked against the Ride Knox files used for this assignment. Long terminal outputs are shortened according to the assignment requirement.
 
 ## Part 0
 
@@ -41,28 +41,7 @@ Updating 9301dcd..fae704a
 Fast-forward
  .gitignore                      |    6 +-
  DATA-DICTIONARY.md              |   85 ++
- charts/anniversary_recovery.png |  Bin 0 -> 87669 bytes
- charts/capacity_pressure.png    |  Bin 0 -> 38698 bytes
- memo.md                         |   20 +
- project.ipynb                   | 1647 +++++++++++++++++++++++++++++++++++++++
- sql/indexes.sql                 |   14 +
- sql/load.sql                    |  210 +++++
- sql/reconciliation.sql          |  255 ++++++
- sql/reports.sql                 |  135 ++++
- sql/schema.sql                  |  104 +++
- sql/views.sql                   |   31 +
- 12 files changed, 2506 insertions(+), 1 deletion(-)
- create mode 100644 DATA-DICTIONARY.md
- create mode 100644 charts/anniversary_recovery.png
- create mode 100644 charts/capacity_pressure.png
- create mode 100644 memo.md
- create mode 100644 project.ipynb
- create mode 100644 sql/indexes.sql
- create mode 100644 sql/load.sql
- create mode 100644 sql/reconciliation.sql
- create mode 100644 sql/reports.sql
- create mode 100644 sql/schema.sql
- create mode 100644 sql/views.sql
+... (22 more lines)
 ```
 
 ```bash
@@ -107,32 +86,7 @@ drwxr-xr-x 1 RAY KYEI 197121    0 Oct 26 17:04  charts/
 -rw-r--r-- 1 RAY KYEI 197121 5.6K Oct 26 17:04  DATA-DICTIONARY.md
 -rw-r--r-- 1 RAY KYEI 197121 1.2K Sep 29 20:57  index.md
 -rw-r--r-- 1 RAY KYEI 197121 136K Oct 17 11:38  M9_assignment.ipynb
--rw-r--r-- 1 RAY KYEI 197121 1.9K Oct 26 17:04  memo.md
-drwxr-xr-x 1 RAY KYEI 197121    0 Oct 26 17:29  out/
--rw-r--r-- 1 RAY KYEI 197121 191K Oct 26 17:04  project.ipynb
--rw-r--r-- 1 RAY KYEI 197121  21K Sep 29 23:55  PROJECT-LOG.md
-drwxr-xr-x 1 RAY KYEI 197121    0 Oct 13 12:02  queries/
--rw-r--r-- 1 RAY KYEI 197121 6.2K Sep 29 19:56  README.md
--rw-r--r-- 1 RAY KYEI 197121 1.2K Sep 29 20:41  RELEASE-NOTE.md
--rw-r--r-- 1 RAY KYEI 197121   37 Sep 29 00:52  requirements.txt
--rw-r--r-- 1 RAY KYEI 197121  24M Oct 13 11:37  ride_knox.db
--rw-r--r-- 1 RAY KYEI 197121  274 Sep 29 16:17  ride_knox_api_token.txt
--rw-r--r-- 1 RAY KYEI 197121  35M Oct 17 11:38  ride_knox_work.db
-drwxr-xr-x 1 RAY KYEI 197121    0 Oct 17 18:37  ride-knox-analysis/
-drwxr-xr-x 1 RAY KYEI 197121    0 Sep 29 16:30  scratch/
-drwxr-xr-x 1 RAY KYEI 197121    0 Sep 29 13:18  screenshots/
--rw-r--r-- 1 RAY KYEI 197121  290 Oct 26 17:42  SHELL-LOG.md
-drwxr-xr-x 1 RAY KYEI 197121    0 Oct 26 17:04  sql/
-drwxr-xr-x 1 RAY KYEI 197121    0 Oct 17 11:47 'SQL module project'/
--rw-r--r-- 1 RAY KYEI 197121  26K Oct 17 17:23  SQL-LOG.md
--rw-r--r-- 1 RAY KYEI 197121  15K Oct  6 11:43  stations.xlsx
--rw-r--r-- 1 RAY KYEI 197121  15K Sep 12 20:37  stations_2026.xlsx
--rw-r--r-- 1 RAY KYEI 197121  22M Oct  6 11:44  trips_2025.csv
--rw-r--r-- 1 RAY KYEI 197121 2.9M Oct 17 12:31  trips_2026_07.csv
--rw-r--r-- 1 RAY KYEI 197121  12M Sep 12 20:37  trips_2026_h1.csv
-drwxr-xr-x 1 RAY KYEI 197121    0 Oct 17 09:27  venv/
-drwxr-xr-x 1 RAY KYEI 197121    0 Oct 26 17:45 'week 10 BASH'/
--rw-r--r-- 1 RAY KYEI 197121  16K Sep 22 03:10  WORKLOG.md
+... (26 more lines)
 ```
 
 The `-h` option makes file sizes human-readable, such as KB or MB, instead of showing only raw byte counts.
@@ -716,7 +670,7 @@ Untracked files:
 ```
 
 ```bash
-$ git commit -m "Complete Assignment 10 Bash data triage"
+$ git commit -m "Complete Assignment 10 shell log"
 [feature/bash-week10-triage 8cf1afa] Complete Assignment 10 shell log
  1 file changed, 29 insertions(+)
 ```
@@ -735,21 +689,70 @@ To https://github.com/RaymondKojoKyei/ride-knox-analysis.git
 branch 'feature/bash-week10-triage' set up to track 'origin/feature/bash-week10-triage'.
 ```
 
-**Pull request URL:** [PASTE THE FINAL GITHUB PR URL AFTER YOU CREATE THE PR]
+I made additional updates to `SHELL-LOG.md` on the feature branch before the pull request was merged. The final feature branch was later recorded at commit `84c72f5` when I deleted the merged local branch.
 
-In the PR description, I would ask the reviewer to check this command:
+**Pull request URL:** https://github.com/RaymondKojoKyei/ride-knox-analysis/pull/43
+
+For reviewer verification, the key field-specific command is:
 
 ```bash
 awk -F',' 'NR>1 && $6=="" && tolower($7)=="member" {count++} END {print count}' trips_2025.csv
 ```
 
-I would ask them to verify that the command correctly combines the two conditions, uses the correct fields, and handles every capitalization of `member`.
+This command combines the missing-end-station condition with the member condition, uses the correct fields, and handles capitalization with `tolower()`.
+
+
+### Final merge verification
+
+After PR #43 was merged, I updated local `main` and verified the final repository state.
+
+```bash
+$ git switch main
+Switched to branch 'main'
+Your branch is up to date with 'origin/main'.
+```
+
+```bash
+$ git pull
+remote: Enumerating objects: 1, done.
+remote: Counting objects: 100% (1/1), done.
+remote: Total 1 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+Unpacking objects: 100% (1/1), 931 bytes | 77.00 KiB/s, done.
+From https://github.com/RaymondKojoKyei/ride-knox-analysis
+   fae704a..8c4abc2  main       -> origin/main
+Updating fae704a..8c4abc2
+Fast-forward
+ .gitignore   |   2 +
+ SHELL-LOG.md | 768 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 770 insertions(+)
+ create mode 100644 SHELL-LOG.md
+```
+
+```bash
+$ git branch -d feature/bash-week10-triage
+Deleted branch feature/bash-week10-triage (was 84c72f5).
+```
+
+The unrelated local files were added to `.git/info/exclude` so they would remain on my computer without being committed to the repository.
+
+```bash
+$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+```
+
+```bash
+$ git push
+Everything up-to-date
+```
 
 ---
 
 ## Part 10 — Optional Challenge
 
-I completed Parts 0–9 first. If I attempt the extra-credit challenge, I will add the command and verified results here before submission.
+Not attempted. Part 10 is optional extra credit; Parts 0–9 and the required reflection are complete.
 
 ---
 
