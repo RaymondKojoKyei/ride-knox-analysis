@@ -1,0 +1,16 @@
+Ride Knox latest intake summary
+
+[receipts]
+file,rows,distinct,malformed,content_month,verdict,reason
+trips_2026_07.csv,33085,32965,0,2026-07,accepted,passed
+trips_2026_08.csv,30045,29925,45,2026-08,accepted,passed
+trips_2026_09.csv,27760,27650,0,2026-09,quarantine,header_contract_mismatch
+trips_2026_09_resend.csv,27760,27650,0,2026-09,accepted,passed
+trips_2026_10.csv,8247,8208,1,2026-10,quarantine,below_minimum_rows;unknown_malformed_rows
+
+[database month totals]
+month,trips
+2026-06,215
+2026-07,32735
+2026-08,29760
+2026-09,27480
