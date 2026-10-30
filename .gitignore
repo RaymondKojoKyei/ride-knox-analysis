@@ -12,3 +12,6 @@ ride_knox_work.db
 .idea/
 out/
 out/
+logs/
+.venv/
+.env
