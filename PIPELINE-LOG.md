@@ -1099,7 +1099,7 @@ To https://github.com/RaymondKojoKyei/ride-knox-analysis.git
    b6c2356..252d274  feature/bash-week11-automation -> feature/bash-week11-automation
 ```
 
-**Pull request URL:** https://github.com/RaymondKojoKyei/ride-knox-analysis/pull/46
+**Pull request URL:** https://github.com/RaymondKojoKyei/ride-knox-analysis/pull/47
 
 ---
 
