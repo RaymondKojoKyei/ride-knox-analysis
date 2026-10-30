@@ -163,3 +163,39 @@ ride-knox-analysis/
 ├── WORKLOG.md
 └── .gitignore
 ```
+
+## Monday briefing
+
+This repository includes an automated Ride Knox station-pressure briefing.
+
+### Run in order
+
+```bash
+python -m venv .venv
+source .venv/Scripts/activate
+pip install -r requirements.txt
+cp .env.example .env
+# Fill RIDE_KNOX_API_KEY locally; never commit .env.
+./pipeline/run_briefing.sh 2025
+```
+
+### Inputs
+
+- `trips_2025.csv` or `trips_<YEAR>.csv`
+- `stations.xlsx`
+- `ride_knox.db`
+- local `RIDE_KNOX_API_KEY`
+- optional `RIDE_KNOX_DATA`, `RIDE_KNOX_DB`, and `RIDE_KNOX_MAX_DUPES`
+
+### Outputs
+
+- `out/stations.csv`
+- `out/dep_<STATION>.txt`
+- `out/station_pressure.csv`
+- `pipeline/latest_summary.txt`
+- `logs/briefing.log`
+- `logs/cron.log`
+
+**Safe to re-run:** Yes. Generated outputs are overwritten deterministically, and an unchanged summary is treated as a normal no-op.
+
+**Fails if:** required inputs/configuration are missing, the API key is unset, duplicate rows exceed the threshold, station conversion/counting fails, SQL fails, or the summary CSV is empty/invalid.
