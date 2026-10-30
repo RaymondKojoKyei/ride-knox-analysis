@@ -15,3 +15,12 @@ out/
 logs/
 .venv/
 .env
+
+# Bash Module Project generated/local files
+incoming/
+accepted/
+quarantine/
+staging/
+ride_knox_fall.db
+trips_*.csv
+stations*.xlsx
