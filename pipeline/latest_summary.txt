@@ -1,0 +1,10 @@
+stations_read=24
+trips_represented=249737
+most_pressured:
+S11 | Cumberland Ave & 17th St | departures=18934 | trips_per_dock=1183.4
+S07 | The Hill - Ayres Hall | departures=14132 | trips_per_dock=1177.7
+S01 | Market Square | departures=22606 | trips_per_dock=1130.3
+least_pressured:
+S23 | Bearden - Kingston Pike | departures=2095 | trips_per_dock=174.6
+S24 | Sequoyah Hills Park | departures=1935 | trips_per_dock=193.5
+S21 | Caswell Park | departures=2835 | trips_per_dock=283.5
