@@ -1,8 +1,8 @@
 # DATA 501; Assignment 11 Pipeline Log
 
-**Name:** Raymond Kojo Kyei  
-**NetID:** rkyei  
-**Shell:** GNU bash, version 5.3.15(2)-release (x86_64-pc-cygwin)  
+**Name:** Raymond Kojo Kyei
+**NetID:** rkyei
+**Shell:** GNU bash, version 5.3.15(2)-release (x86_64-pc-cygwin)
 **sqlite3 version:** 3.53.4 2026-07-24 19:02:57 bf7c7f30031888f4e796e429ab3978879485813aaca6f641c7b33e4e09459bcc (64-bit)
 
 > All analytical answers, scripts, and data-dependent results below are completed from the actual Ride Knox course files. Only machine-generated identifiers that cannot exist until you run locally—your exact Bash/sqlite version strings, timestamp lines, Git commit output, and final PR URL—must be replaced during the confirmation run.
