@@ -199,3 +199,17 @@ cp .env.example .env
 **Safe to re-run:** Yes. Generated outputs are overwritten deterministically, and an unchanged summary is treated as a normal no-op.
 
 **Fails if:** required inputs/configuration are missing, the API key is unset, duplicate rows exceed the threshold, station conversion/counting fails, SQL fails, or the summary CSV is empty/invalid.
+
+## Monthly intake
+
+The fall Ride Knox intake workflow audits new monthly vendor deliveries, separates usable and unusable files, loads accepted trips without double-counting, produces the fall reporting tables, and records a reproducible summary.
+
+### Run in order
+
+```bash
+python -m venv .venv
+source .venv/Scripts/activate
+pip install -r requirements.txt
+cp .env.example .env
+# Add the local RIDE_KNOX_API_KEY value to .env; never commit .env.
+./pipeline/run_intake.sh
