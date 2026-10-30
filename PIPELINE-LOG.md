@@ -5,7 +5,7 @@
 **Shell:** GNU bash, version 5.3.15(2)-release (x86_64-pc-cygwin)
 **sqlite3 version:** 3.53.4 2026-07-24 19:02:57 bf7c7f30031888f4e796e429ab3978879485813aaca6f641c7b33e4e09459bcc (64-bit)
 
-> All analytical answers, scripts, and data-dependent results below are completed from the actual Ride Knox course files. Only machine-generated identifiers that cannot exist until you run locally—your exact Bash/sqlite version strings, timestamp lines, Git commit output, and final PR URL—must be replaced during the confirmation run.
+> The analytical answers and data-dependent results below have been reconciled with the Ride Knox course files and the terminal outputs from the final confirmation runs. The only value intentionally left open before the pull request is created is the final PR URL.
 
 ## Part 0
 
@@ -44,12 +44,12 @@ Untracked files:
 
 ```bash
 $ bash --version | head -n 1
-[replace with your exact first line]
+GNU bash, version 5.3.15(2)-release (x86_64-pc-cygwin)
 ```
 
 ```bash
 $ sqlite3 --version
-[replace with your exact version line]
+3.53.4 2026-07-24 19:02:57 bf7c7f30031888f4e796e429ab3978879485813aaca6f641c7b33e4e09459bcc (64-bit)
 ```
 
 ### TODO 0c
@@ -596,12 +596,26 @@ The API-key value lives in the environment, or in a local `.env` file that is ig
 
 ### TODO 6a
 
+The system `python` command was not available from Git Bash, so I used the existing repository virtual-environment Python to create the required `.venv`, then activated it.
+
 ```bash
-$ python -m venv .venv
+$ ls venv/Scripts/python.exe
+venv/Scripts/python.exe*
+
+$ venv/Scripts/python.exe --version
+Python 3.13.5
+
+$ venv/Scripts/python.exe -m venv .venv
 [no terminal output]
 
 $ source .venv/Scripts/activate
 (.venv) RAY KYEI@DESKTOP-12S1H4F MINGW64 ~/Documents/ride-knox-analysis (feature/bash-week11-automation)
+
+$ python --version
+Python 3.13.5
+
+$ pip --version
+pip 26.2.2 from C:\Users\RAY KYEI\Documents\ride-knox-analysis\.venv\Lib\site-packages\pip (python 3.13)
 ```
 
 `.gitignore` addition:
@@ -612,23 +626,25 @@ $ source .venv/Scripts/activate
 
 ### TODO 6b
 
-For a fresh environment containing the two pinned direct dependencies:
+Actual environment count after installing the repository requirements:
 
 ```bash
 $ pip freeze | wc -l
-8
+107
 ```
 
 `requirements.txt`:
 
 ```text
-pandas==2.3.3
+pandas==3.1.0
+matplotlib==3.11.2
 openpyxl==3.1.5
+jupyter==1.1.1
 ```
 
 ### Q6c
 
-`pip freeze` lists **8 installed packages**, while the hand-written `requirements.txt` names only **2 direct project requirements**. The larger freeze includes transitive dependencies and therefore over-specifies the environment. Shipping the freeze can pin unnecessary platform-specific/transitive packages and make installation more fragile for the analyst.
+`pip freeze` lists **107 installed packages**, while the hand-written `requirements.txt` names only **4 direct project requirements**. The larger freeze includes transitive dependencies and therefore over-specifies the environment. Shipping all 107 packages would unnecessarily pin many indirect packages and could make installation more fragile or platform-dependent for another analyst.
 
 ### TODO 6d
 
@@ -723,13 +739,13 @@ First four and last three CSV lines:
 ```bash
 $ { head -n 4 out/station_pressure.csv; echo "..."; tail -n 3 out/station_pressure.csv; }
 station_id,station_name,docks,departures,trips_per_dock
-S11,Cumberland Ave & 17th St,16,18934,1183.4
-S07,The Hill - Ayres Hall,12,14132,1177.7
-S01,Market Square,20,22606,1130.3
+S11,"Cumberland Ave & 17th St",16,18934,1183.4
+S07,"The Hill - Ayres Hall",12,14132,1177.7
+S01,"Market Square",20,22606,1130.3
 ...
-S21,Caswell Park,10,2835,283.5
-S24,Sequoyah Hills Park,10,1935,193.5
-S23,Bearden - Kingston Pike,12,2095,174.6
+S21,"Caswell Park",10,2835,283.5
+S24,"Sequoyah Hills Park",10,1935,193.5
+S23,"Bearden - Kingston Pike",12,2095,174.6
 ```
 
 ### TODO 7c
@@ -948,28 +964,35 @@ Command:
 $ ./pipeline/run_briefing.sh 2025 2>&1 | tee logs/briefing.log
 ```
 
-The run should contain the following stage/result sequence; **replace the timestamps with the ones from your confirmation run**:
+Actual `tee` run (the command produced more than 15 lines, so the first 10 are shown, followed by the required omitted-line count):
 
 ```text
-[TIMESTAMP] validation starting
+[2026-10-29T22:49:36] validation starting
 rows=250600 distinct=250000 duplicates=600
 with_end_station=246826 without_end_station=3774
 example_output_path=/c/Users/RAY KYEI/Documents/ride-knox-analysis/out/Market_Square_2025.txt
 Validation succeeded for /c/Users/RAY KYEI/Documents/ride-knox-analysis/trips_2025.csv
 summary: rows=250600 distinct=250000 missing_end=3774
-[TIMESTAMP] station workbook conversion starting
+[2026-10-29T22:49:43] station workbook conversion starting
 stations_written=24
-output=/c/Users/RAY KYEI/Documents/ride-knox-analysis/out/stations.csv
-[TIMESTAMP] station departure files starting
-S01 22656
-... (output continues for all 24 stations)
-[TIMESTAMP] sqlite station-pressure query starting
-[TIMESTAMP] Python summary starting
+output=C:\Users\RAY KYEI\Documents\ride-knox-analysis\out\stations.csv
+[2026-10-29T22:49:44] station departure files starting
+… (69 more lines)
+```
+
+The same run ended with:
+
+```text
+[2026-10-29T22:49:49] sqlite station-pressure query starting
+[2026-10-29T22:49:51] Python summary starting
 stations_read=24
 trips_represented=249737
-... (summary lines)
-[TIMESTAMP] writing latest summary
-[TIMESTAMP] briefing complete
+[2026-10-29T22:49:52] writing latest summary
+[feature/bash-week11-automation 8382547] Update latest station pressure summary
+ 1 file changed, 10 insertions(+)
+ create mode 100644 pipeline/latest_summary.txt
+[2026-10-29T22:49:53] latest summary committed
+[2026-10-29T22:49:54] briefing complete
 ```
 
 ### TODO 8c
@@ -979,12 +1002,28 @@ $ cp out/station_pressure.csv out/pressure_run1.csv
 [no terminal output]
 
 $ ./pipeline/run_briefing.sh 2025
-[same analytical results as first run; timestamp lines differ]
+[2026-10-29T22:54:04] validation starting
+rows=250600 distinct=250000 duplicates=600
+with_end_station=246826 without_end_station=3774
+example_output_path=/c/Users/RAY KYEI/Documents/ride-knox-analysis/out/Market_Square_2025.txt
+Validation succeeded for /c/Users/RAY KYEI/Documents/ride-knox-analysis/trips_2025.csv
+summary: rows=250600 distinct=250000 missing_end=3774
+[2026-10-29T22:54:10] station workbook conversion starting
+stations_written=24
+output=C:\Users\RAY KYEI\Documents\ride-knox-analysis\out\stations.csv
+[2026-10-29T22:54:11] station departure files starting
+… (66 more lines)
 
 $ wc -l out/pressure_run1.csv out/station_pressure.csv
-25 out/pressure_run1.csv
-25 out/station_pressure.csv
-50 total
+  25 out/pressure_run1.csv
+  25 out/station_pressure.csv
+  50 total
+
+$ cmp -s out/pressure_run1.csv out/station_pressure.csv
+[no terminal output]
+
+$ echo "cmp_exit=$?"
+cmp_exit=0
 
 $ cat out/pressure_run1.csv out/station_pressure.csv | sort -u | wc -l
 25
@@ -997,7 +1036,8 @@ The pipeline is idempotent because both runs produce the same 25-line CSV (one h
 The relevant lines are:
 
 ```bash
-"$PYTHON_BIN" "$ROOT_DIR/pipeline/summarize.py"   "$ROOT_DIR/out/station_pressure.csv" > "$ROOT_DIR/pipeline/latest_summary.txt"
+"$PYTHON_BIN" "$ROOT_DIR/pipeline/summarize.py" \
+  "$ROOT_DIR/out/station_pressure.csv" > "$ROOT_DIR/pipeline/latest_summary.txt"
 
 git -C "$ROOT_DIR" add pipeline/latest_summary.txt
 if git -C "$ROOT_DIR" diff --cached --quiet; then
@@ -1011,7 +1051,7 @@ fi
 On the unchanged rerun, the important output is:
 
 ```text
-[TIMESTAMP] latest summary unchanged; no commit needed
+[2026-10-29T22:54:19] latest summary unchanged; no commit needed
 ```
 
 ### Q8e
@@ -1025,13 +1065,41 @@ $ git add .gitignore .env.example requirements.txt README.md PIPELINE-LOG.md pip
 [no terminal output]
 
 $ git commit -m "Complete Assignment 11 Bash automation pipeline"
-[replace with your actual commit output]
+[feature/bash-week11-automation b6c2356] Complete Assignment 11 Bash automation pipeline
+ 10 files changed, 1574 insertions(+), 4 deletions(-)
+ create mode 100644 .env.example
+ create mode 100644 PIPELINE-LOG.md
+ create mode 100644 pipeline/check_data.sh
+ create mode 100644 pipeline/run_briefing.sh
+ create mode 100644 pipeline/station_files.sh
+ create mode 100644 pipeline/station_pressure.sql
+ create mode 100644 pipeline/stations_to_csv.py
+ create mode 100644 pipeline/summarize.py
 
 $ git push -u origin feature/bash-week11-automation
-[replace with your actual push output]
+Enumerating objects: 20, done.
+Counting objects: 100% (20/20), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (15/15), done.
+Writing objects: 100% (17/17), 14.55 KiB | 2.08 MiB/s, done.
+Total 17 (delta 3), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (3/3), completed with 2 local objects.
+… (7 more lines)
 ```
 
-**Pull request URL:** **REPLACE WITH THE NEW PR URL CREATED BY GITHUB**
+A documentation cleanup was also committed and pushed before opening the PR:
+
+```bash
+$ git commit -m "Finalize Assignment 11 documentation"
+[feature/bash-week11-automation 252d274] Finalize Assignment 11 documentation
+ 2 files changed, 38 insertions(+), 4 deletions(-)
+
+$ git push
+To https://github.com/RaymondKojoKyei/ride-knox-analysis.git
+   b6c2356..252d274  feature/bash-week11-automation -> feature/bash-week11-automation
+```
+
+**Pull request URL:** **[ADD AFTER GITHUB CREATES THE PR]**
 
 ---
 
@@ -1065,15 +1133,166 @@ with `.venv/bin/python` as the Unix fallback.
 
 ### TODO 9c
 
+The first stripped-environment test correctly exposed two cron-environment dependencies. First, `sqlite3` was not on the minimal PATH:
+
 ```bash
-$ env -i HOME="$HOME" PATH="/usr/local/bin:/usr/bin:/bin:/mingw64/bin" ./pipeline/run_briefing.sh 2025
+$ command -v sqlite3
+/c/Users/RAY KYEI/AppData/Local/Microsoft/WinGet/Packages/SQLite.SQLite_Microsoft.Winget.Source_8wekyb3d8bbwe/sqlite3
 ```
 
-Expected analytical result: the same 250,600/250,000/600/3,774 validation, 24-station conversion, 250,337 raw-file station departures, and 249,737 database departures. The exact timestamps come from your confirmation run.
+After adding that directory to the script PATH, SQLite was found, but the full SQL aggregation still needed temporary-directory variables. A direct stripped-environment SQL test with `TEMP` and `TMP` preserved succeeded:
+
+```bash
+$ env -i HOME="$HOME" TEMP="$TEMP" TMP="$TMP" \
+  PATH="/c/Users/RAY KYEI/AppData/Local/Microsoft/WinGet/Packages/SQLite.SQLite_Microsoft.Winget.Source_8wekyb3d8bbwe:/usr/local/bin:/usr/bin:/bin:/mingw64/bin" \
+  sqlite3 ride_knox.db < pipeline/station_pressure.sql
+
+$ echo "exit=$?"
+exit=0
+
+$ wc -l out/station_pressure.csv
+25 out/station_pressure.csv
+```
+
+The final cron-safe `pipeline/run_briefing.sh` therefore sets the SQLite directory explicitly and supplies `TEMP`/`TMP` defaults before running the pipeline:
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+# Run the complete Monday Ride Knox station-pressure briefing.
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
+SQLITE_DIR="/c/Users/RAY KYEI/AppData/Local/Microsoft/WinGet/Packages/SQLite.SQLite_Microsoft.Winget.Source_8wekyb3d8bbwe"
+export PATH="$SQLITE_DIR:/usr/local/bin:/usr/bin:/bin:/mingw64/bin:${PATH:-}"
+export TEMP="${TEMP:-/tmp}"
+export TMP="${TMP:-/tmp}"
+
+YEAR="${1:-}"
+if [[ -z "$YEAR" ]]; then
+  echo "Usage: $0 YEAR" >&2
+  exit 1
+fi
+
+if [[ -f "$ROOT_DIR/.env" ]]; then
+  set -a
+  # shellcheck disable=SC1091
+  source "$ROOT_DIR/.env"
+  set +a
+fi
+
+PYTHON_BIN="$ROOT_DIR/.venv/Scripts/python.exe"
+if [[ ! -x "$PYTHON_BIN" ]]; then
+  PYTHON_BIN="$ROOT_DIR/.venv/bin/python"
+fi
+
+if [[ ! -x "$PYTHON_BIN" ]]; then
+  echo "ERROR: virtual-environment Python not found under .venv" >&2
+  exit 1
+fi
+
+DB_PATH="${RIDE_KNOX_DB:-ride_knox.db}"
+DATA_DIR="${RIDE_KNOX_DATA:-$ROOT_DIR}"
+
+timestamp() {
+  date '+[%Y-%m-%dT%H:%M:%S]'
+}
+
+echo "$(timestamp) validation starting"
+"$ROOT_DIR/pipeline/check_data.sh" "$YEAR"
+
+echo "$(timestamp) station workbook conversion starting"
+"$PYTHON_BIN" "$ROOT_DIR/pipeline/stations_to_csv.py" \
+  "$DATA_DIR/stations.xlsx" "$ROOT_DIR/out/stations.csv"
+
+echo "$(timestamp) station departure files starting"
+"$ROOT_DIR/pipeline/station_files.sh" "$YEAR"
+
+echo "$(timestamp) sqlite station-pressure query starting"
+sqlite3 "$DB_PATH" < "$ROOT_DIR/pipeline/station_pressure.sql"
+
+echo "$(timestamp) Python summary starting"
+"$PYTHON_BIN" "$ROOT_DIR/pipeline/summarize.py" \
+  "$ROOT_DIR/out/station_pressure.csv"
+
+echo "$(timestamp) writing latest summary"
+"$PYTHON_BIN" "$ROOT_DIR/pipeline/summarize.py" \
+  "$ROOT_DIR/out/station_pressure.csv" > "$ROOT_DIR/pipeline/latest_summary.txt"
+
+git -C "$ROOT_DIR" add pipeline/latest_summary.txt
+if git -C "$ROOT_DIR" diff --cached --quiet; then
+  echo "$(timestamp) latest summary unchanged; no commit needed"
+else
+  git -C "$ROOT_DIR" commit -m "Update latest station pressure summary"
+  echo "$(timestamp) latest summary committed"
+fi
+
+echo "$(timestamp) briefing complete"
+```
+
+Final stripped-environment confirmation:
+
+```bash
+$ env -i HOME="$HOME" PATH="/usr/local/bin:/usr/bin:/bin:/mingw64/bin" \
+  ./pipeline/run_briefing.sh 2025
+[2026-10-29T23:33:32] validation starting
+rows=250600 distinct=250000 duplicates=600
+with_end_station=246826 without_end_station=3774
+example_output_path=/c/Users/RAY KYEI/Documents/ride-knox-analysis/out/Market_Square_2025.txt
+Validation succeeded for /c/Users/RAY KYEI/Documents/ride-knox-analysis/trips_2025.csv
+summary: rows=250600 distinct=250000 missing_end=3774
+[2026-10-29T23:33:33] station workbook conversion starting
+stations_written=24
+output=C:\Users\RAY KYEI\Documents\ride-knox-analysis\out\stations.csv
+[2026-10-29T23:33:34] station departure files starting
+S01 22656
+S02 16570
+S03 10633
+S04 14302
+S05 15435
+S06 26112
+S07 14177
+S08 25044
+S09 13032
+S10 7268
+… (14 more station lines)
+zero_departure_stations=0
+total_departures=250337
+ranking:
+S06 26112
+S08 25044
+S01 22656
+S11 18983
+S02 16570
+S05 15435
+S04 14302
+S07 14177
+S09 13032
+S03 10633
+… (14 more ranking lines)
+[2026-10-29T23:33:38] sqlite station-pressure query starting
+[2026-10-29T23:33:39] Python summary starting
+stations_read=24
+trips_represented=249737
+most_pressured:
+S11 | Cumberland Ave & 17th St | departures=18934 | trips_per_dock=1183.4
+S07 | The Hill - Ayres Hall | departures=14132 | trips_per_dock=1177.7
+S01 | Market Square | departures=22606 | trips_per_dock=1130.3
+least_pressured:
+S23 | Bearden - Kingston Pike | departures=2095 | trips_per_dock=174.6
+S24 | Sequoyah Hills Park | departures=1935 | trips_per_dock=193.5
+S21 | Caswell Park | departures=2835 | trips_per_dock=283.5
+[2026-10-29T23:33:40] writing latest summary
+[2026-10-29T23:33:41] latest summary unchanged; no commit needed
+[2026-10-29T23:33:41] briefing complete
+```
+
+The stripped-environment run completed successfully, proving that the orchestration script does not depend on an activated virtual environment, the interactive working directory, or the user's normal PATH.
 
 ### Q9d
 
-Cron does not provide an activated virtual environment, the full interactive PATH, or the working directory I happened to use interactively. The script compensates by calling Python directly from `.venv`, exporting an explicit baseline PATH, and computing `ROOT_DIR` from the script location before `cd "$ROOT_DIR"`.
+Cron does not provide an activated virtual environment, the full interactive PATH, the working directory used interactively, or necessarily the temporary-directory variables available in the interactive shell. The final script compensates by calling Python directly from `.venv`, computing `ROOT_DIR` from the script location and changing to it, adding the installed SQLite directory to PATH, and supplying `TEMP` and `TMP` defaults.
 
 ---
 
@@ -1190,7 +1409,7 @@ Conversion:
 ```bash
 $ .venv/Scripts/python.exe pipeline/stations_to_csv.py stations.xlsx out/stations.csv
 stations_written=24
-output=out/stations.csv
+output=out\stations.csv
 ```
 
 All-station loop output, sorted here for readability:

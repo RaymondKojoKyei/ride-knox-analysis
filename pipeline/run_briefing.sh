@@ -5,7 +5,10 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
-export PATH="/usr/local/bin:/usr/bin:/bin:/mingw64/bin:${PATH:-}"
+SQLITE_DIR="/c/Users/RAY KYEI/AppData/Local/Microsoft/WinGet/Packages/SQLite.SQLite_Microsoft.Winget.Source_8wekyb3d8bbwe"
+export PATH="$SQLITE_DIR:/usr/local/bin:/usr/bin:/bin:/mingw64/bin:${PATH:-}"DB_PATH="${RIDE_KNOX_DB:-ride_knox.db}"
+export TEMP="${TEMP:-/tmp}"
+export TMP="${TMP:-/tmp}"
 
 YEAR="${1:-}"
 if [[ -z "$YEAR" ]]; then

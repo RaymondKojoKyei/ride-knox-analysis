@@ -162,7 +162,9 @@ ride-knox-analysis/
 ├── COLLAB-LOG.md
 ├── WORKLOG.md
 └── .gitignore
-```## Monday briefing
+```
+
+## Monday briefing
 
 This repository includes an automated Ride Knox station-pressure briefing.
 
