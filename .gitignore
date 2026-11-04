@@ -11,7 +11,6 @@ ride_knox_v2.db
 ride_knox_work.db
 .idea/
 out/
-out/
 logs/
 .venv/
 .env
@@ -24,3 +23,11 @@ staging/
 ride_knox_fall.db
 trips_*.csv
 stations*.xlsx
+figs/
+
+# Local R / Assignment 12 working files
+.Rhistory
+Assignment12_Submission/
+Assignment12_Submission.zip
+Bash_Module_Project/
+week 12 R studio/
