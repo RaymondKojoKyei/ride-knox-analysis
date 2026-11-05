@@ -683,7 +683,7 @@ ggsave("figs/04_daily_rhythm.png", plot = fig4,
        width = 10, height = 6, dpi = 300, bg = "white")
 ```
 
-### TODO 11b — Fresh-session proof
+### ### TODO 11b — Fresh-session proof
 
 After **Session → Restart R**, I ran:
 
@@ -691,7 +691,7 @@ After **Session → Restart R**, I ran:
 source("fleet_pressure.R")
 ```
 
-The script ran from the project root without errors. The relevant console output was:
+The script ran from the project root without errors. The console confirmed the raw trip import and monthly summary:
 
 ```text
 Rows: 250600 Columns: 8
@@ -700,34 +700,11 @@ Delimiter: ","
 chr  (6): trip_id, start_station_id, start_station_name, end_station_id, rider_type, bike_type
 dttm (2): start_time, end_time
 
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-
-Rows: 24
-Columns: 7
-$ station_id     <chr> "S01", "S02", "S03", "S04", "S05", "S06", "S07", "S08", "S09", "S10", "S11", "S12", "S13", "S14", "S15", "S16", "S17…
-$ station_name   <chr> "Market Square", "Gay Street & Union Ave", "Krutch Park", "Old City - Jackson Ave", "World's Fair Park", "Hodges Lib…
-$ neighborhood   <chr> "Downtown", "Downtown", "Downtown", "Old City", "World's Fair Park", "UT Campus", "UT Campus", "UT Campus", "UT Camp…
-$ latitude       <dbl> 35.9649, 35.9662, 35.9636, 35.9721, 35.9622, 35.9553, 35.9546, 35.9560, 35.9550, 35.9448, 35.9575, 35.9601, 35.9673,…
-$ longitude      <dbl> -83.9197, -83.9184, -83.9186, -83.9151, -83.9265, -83.9264, -83.9256, -83.9295, -83.9250, -83.9376, -83.9330, -83.93…
-$ docks          <dbl> 20, 16, 12, 16, 20, 24, 12, 24, 16, 12, 16, 12, 10, 12, 10, 10, 12, 10, 12, 10, 10, 12, 12, 10
-$ year_installed <dbl> 2022, 2022, 2022, 2022, 2022, 2022, 2022, 2022, 2023, 2023, 2022, 2023, 2023, 2023, 2024, 2024, 2023, 2024, 2024, 20…
-
 # A tibble: 12 × 4
    month     trips casual_pct median_min
    <fct>     <int>      <dbl>      <dbl>
  1 January   10791       43.5       14.1
- 2 February  13280       42.7       14.0
- 3 March     19725       43.4       14.3
- 4 April     25396       44.3       14.2
- 5 May       29613       44.6       14.4
- 6 June      31279       44.2       14.2
- 7 July      26926       33.8       13.5
- 8 August    24611       30.4       13.4
- 9 September 22947       27.4       13.1
-10 October   19568       25.5       13.0
-11 November  13587       24.4       13.0
-12 December  10244       22.7       12.8
+... (11 more rows)
 ```
 
 I then confirmed the four required figures with:
@@ -741,7 +718,8 @@ list.files("figs", pattern = "\\.png$")
 [3] "03_duration_by_bike.png"  "04_daily_rhythm.png"
 ```
 
-`fleet_pressure.R` ran from a restarted R session and all four required PNG files were written to `figs/`.
+`fleet_pressure.R` ran successfully from a restarted R session, and all four required PNG files were written to `figs/`.
+ 
 
 ### TODO 11c — Operations one-pager (206 words)
 
@@ -778,6 +756,7 @@ To https://github.com/RaymondKojoKyei/ride-knox-analysis.git
 
 **Part 11d commit URL:**  
 https://github.com/RaymondKojoKyei/ride-knox-analysis/commit/3dee7865ae1dcf50a0d41d43e6167b5b04ecffe8
+
 
 I then committed the completed analysis log separately:
 
