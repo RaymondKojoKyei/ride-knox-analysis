@@ -900,4 +900,4 @@ Departures                         247967
 Arrivals                           244241
 ```
 
-All six assignment anchors reconcile.
+All required assignment anchors reconcile.
