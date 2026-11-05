@@ -5,7 +5,7 @@
 **R version:** `R version 4.6.1 (2026-06-24 ucrt)`
 **tidyverse version:** `2.0.0`
 
-> **Final-run note:** The RStudio working directory, R version, tidyverse version, fresh-session run, and four generated figures have now been verified from the actual local run. The remaining item to add before final submission is the Part 11d Git commit URL.
+> **Final-run note:** The RStudio working directory, R version, tidyverse version, fresh-session run, four generated figures, and Part 11d Git commit URL have all been verified from the actual local workflow.
 
 ## Part 0
 
@@ -128,14 +128,15 @@ trips <- read_csv("trips_2025.csv")
 stations <- read_excel("stations.xlsx")
 ```
 
-Expected `read_csv()` specification from the supplied file:
-
 ```text
 Rows: 250600 Columns: 8
-── Column specification ─────────────────────────
+── Column specification ─────────────────────────────────────────────────────────
 Delimiter: ","
 chr  (6): trip_id, start_station_id, start_station_name, end_station_id, rider_type, bike_type
 dttm (2): start_time, end_time
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 ```
 
 ### TODO 2b — `glimpse(stations)`
@@ -732,7 +733,7 @@ $ year_installed <dbl> 2022, 2022, 2022, 2022, 2022, 2022, 2022, 2022, 2023, 202
 I then confirmed the four required figures with:
 
 ```r
-list.files("figs", pattern = "\.png$")
+list.files("figs", pattern = "\\.png$")
 ```
 
 ```text
@@ -756,25 +757,49 @@ list.files("figs", pattern = "\.png$")
 
 ### TODO 11d — Git
 
-Commands to run in Git Bash:
+I first confirmed that generated figures and raw data were ignored, then staged and committed the reproducible R script and `.gitignore`:
 
 ```bash
-echo "figs/" >> .gitignore
-git add fleet_pressure.R ANALYSIS-LOG.md .gitignore
+git add .gitignore fleet_pressure.R
+git status
 git commit -m "Complete DATA 501 Assignment 12 R analysis"
 git push
-git status
+git rev-parse HEAD
 ```
-
-Final expected status:
 
 ```text
-On branch main
-Your branch is up to date with 'origin/main'.
-nothing to commit, working tree clean
+[main 3dee786] Complete DATA 501 Assignment 12 R analysis
+2 files changed, 422 insertions(+), 1 deletion(-)
+create mode 100644 fleet_pressure.R
+To https://github.com/RaymondKojoKyei/ride-knox-analysis.git
+   7acb714..3dee786  main -> main
+3dee7865ae1dcf50a0d41d43e6167b5b04ecffe8
 ```
 
-**Commit URL:** [`\[PASTE THE ACTUAL GITHUB COMMIT URL HERE AFTER PUSH\]`](https://github.com/RaymondKojoKyei/ride-knox-analysis/commit/3dee7865ae1dcf50a0d41d43e6167b5b04ecffe8)
+**Part 11d commit URL:**  
+https://github.com/RaymondKojoKyei/ride-knox-analysis/commit/3dee7865ae1dcf50a0d41d43e6167b5b04ecffe8
+
+I then committed the completed analysis log separately:
+
+```bash
+git add ANALYSIS-LOG.md
+git commit -m "Complete Assignment 12 analysis log"
+git push
+git status
+git push
+```
+
+```text
+[main 929b8bf] Complete Assignment 12 analysis log
+1 file changed, 899 insertions(+)
+create mode 100644 ANALYSIS-LOG.md
+
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+Everything up-to-date
+```
 
 ### Q11e
 
