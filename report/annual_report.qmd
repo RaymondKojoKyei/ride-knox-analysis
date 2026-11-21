@@ -1,0 +1,344 @@
+---
+title: "Ride Knox 2026 Annual Report - Built by the System"
+author: "Raymond Kojo Kyei (rkyei)"
+date: today
+format:
+  html:
+    embed-resources: true
+    toc: true
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+library(broom)
+
+monthly <- read_csv("../out/monthly_by_product.csv", show_col_types = FALSE)
+daily <- read_csv("../out/daily_products.csv", show_col_types = FALSE) |>
+  mutate(date = as.Date(date))
+weather <- read_csv("../out/weather_daily.csv", show_col_types = FALSE) |>
+  mutate(date = as.Date(date))
+capacity <- read_csv("../out/capacity_by_year.csv", show_col_types = FALSE)
+coverage <- read_csv("../out/coverage.csv", show_col_types = FALSE) |>
+  mutate(
+    year = as.integer(year),
+    first_day = as.Date(first_day),
+    last_day = as.Date(last_day)
+  )
+ledger <- read_csv("../out/system_reconciliation.csv", show_col_types = FALSE)
+
+theme_board <- theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    plot.subtitle = element_text(size = 11),
+    panel.grid.minor = element_blank()
+  )
+
+dir.create("../figs", showWarnings = FALSE)
+```
+
+*Reader note: this report reads the reporting extracts produced by the system. The source data are not read directly here, and the figures and headline values are recalculated when the report is rebuilt.*
+
+## 1. What the system holds
+
+```{r}
+#| label: audit-counts
+#| include: false
+raw_total <- sum(ledger$raw_rows, na.rm = TRUE)
+loaded_total <- sum(ledger$loaded, na.rm = TRUE)
+excluded_total <- sum(ledger$excluded_rows, na.rm = TRUE)
+reportable_total <- sum(coverage$reportable_trips)
+warehouse_2026 <- ledger |>
+  filter(grepl("^trips_2026", file)) |>
+  summarise(n = sum(loaded, na.rm = TRUE)) |>
+  pull(n)
+warehouse_2025 <- ledger |>
+  filter(file == "trips_2025.csv") |>
+  summarise(n = sum(loaded, na.rm = TRUE)) |>
+  pull(n)
+cov26 <- coverage |> filter(year == 2026)
+weather_raw <- ledger |> filter(file == "weather_knoxville_daily.csv") |> pull(raw_rows) |> first()
+weather_loaded <- ledger |> filter(file == "weather_knoxville_daily.csv") |> pull(loaded) |> first()
+weather_duplicate_rows <- ledger |>
+  filter(file == "weather_knoxville_daily.csv", exclusion == "duplicate_date_rows") |>
+  pull(excluded_rows) |>
+  first()
+precip_sentinel_days <- sum(is.na(weather$precip_in))
+```
+
+The handover closes end to end. Across all source files, **`r format(raw_total, big.mark = ",")` raw rows** are accounted for: **`r format(loaded_total, big.mark = ",")` loaded** and **`r format(excluded_total, big.mark = ",")` excluded under named reasons**. The trip warehouse contains **`r format(warehouse_2025, big.mark = ",")` trips from 2025** and **`r format(warehouse_2026, big.mark = ",")` from 2026**. Of the two-year trip total, **`r format(reportable_total, big.mark = ",")` trips** meet the shared reporting definition.
+
+The weather delivery contained **`r weather_raw` rows**. Duplicate dates were collapsed to **`r weather_loaded` unique dates**, accounting for **`r weather_duplicate_rows` duplicate-date rows**. The vendor's missing-precipitation sentinel was converted to missing values on **`r precip_sentinel_days` dates** rather than allowed to enter averages as a real rainfall value.
+
+The October trip file was correctly refused by the intake gate because it was below the normal monthly row floor. The build then releases that file through an explicit override and keeps only structurally complete rows. As a result, 2026 trip coverage ends on **`r format(cov26$last_day, "%B %d, %Y")`**. Every comparison below respects that coverage limit.
+
+```{r}
+#| label: ledger-table
+knitr::kable(
+  ledger,
+  caption = "System reconciliation ledger: every source row is assigned to a loaded or named excluded outcome."
+)
+```
+
+## 2. Two-year ridership picture
+
+For a like-for-like product view, **non-member trips are casual plus day-pass trips**. There were no day-pass trips in 2025, so the 2025 non-member count is the casual count. The monthly chart below stops at September because October 2026 is only a partial month.
+
+```{r}
+#| label: two-year-monthly
+monthly_nonmember <- monthly |>
+  filter(product_code %in% c("casual", "day_pass")) |>
+  mutate(month_num = as.integer(substr(month, 6, 7))) |>
+  filter(month_num <= 9) |>
+  group_by(year, month_num) |>
+  summarise(nonmember = sum(trips), .groups = "drop") |>
+  mutate(year = factor(year))
+
+p_monthly <- ggplot(
+  monthly_nonmember,
+  aes(x = month_num, y = nonmember, group = year, linetype = year, shape = year)
+) +
+  geom_line(linewidth = 0.9) +
+  geom_point(size = 2.5) +
+  scale_x_continuous(breaks = 1:9, labels = month.abb[1:9]) +
+  scale_y_continuous(labels = function(x) format(x, big.mark = ",", scientific = FALSE)) +
+  labs(
+    title = "Non-member trips across the complete months",
+    subtitle = "Casual + day-pass trips; January through September only",
+    x = "Month",
+    y = "Trips",
+    linetype = "Year",
+    shape = "Year"
+  ) +
+  theme_board
+
+p_monthly
+ggsave("../figs/two_year_nonmember.png", p_monthly, width = 9, height = 5, dpi = 160)
+```
+
+The chart shows the operational recovery, but a raw year-over-year line still mixes riding demand with differences in weather and calendar structure. The next section separates those influences as far as the course data allow.
+
+## 3. Integration Question: was the recovery riding, or weather?
+
+The comparison window is **January 1 through October 11 in both years**, matching the last usable 2026 date instead of comparing a partial 2026 year with all of 2025. Each day's non-member count is casual trips plus day-pass trips.
+
+```{r}
+#| label: integration-prepare
+cov26_end <- cov26$last_day[[1]]
+cutoff_md <- format(cov26_end, "%m-%d")
+
+daily_two_year <- daily |>
+  mutate(
+    year = year(date),
+    month_day = format(date, "%m-%d"),
+    nonmember = casual + day_pass
+  ) |>
+  filter(month_day <= cutoff_md)
+
+window_counts <- daily_two_year |> count(year, name = "days")
+stopifnot(n_distinct(window_counts$days) == 1)
+
+# Join-safety proof: weather must be one row per date, and the join must not
+# manufacture or lose a daily ridership row.
+weather_unique_dates <- n_distinct(weather$date)
+stopifnot(weather_unique_dates == nrow(weather))
+
+joined <- daily_two_year |>
+  left_join(weather, by = "date")
+stopifnot(nrow(joined) == nrow(daily_two_year))
+stopifnot(sum(is.na(joined$tmax_f)) == 0)
+
+weather_exclusions <- joined |>
+  filter(is.na(tmax_f) | is.na(tmin_f) | is.na(precip_in)) |>
+  nrow()
+
+analysis_days <- joined |>
+  filter(!is.na(tmax_f), !is.na(tmin_f), !is.na(precip_in)) |>
+  mutate(
+    year_factor = factor(year),
+    tavg_f = (tmax_f + tmin_f) / 2,
+    month_factor = factor(month(date)),
+    weekday_factor = factor(wday(date, label = TRUE, week_start = 1))
+  )
+
+join_proof <- tibble(
+  check = c(
+    "Ridership rows before weather join",
+    "Rows after weather join",
+    "Unique weather dates in audited extract",
+    "Days excluded for missing weather control"
+  ),
+  value = c(
+    nrow(daily_two_year),
+    nrow(joined),
+    weather_unique_dates,
+    weather_exclusions
+  )
+)
+```
+
+```{r}
+#| label: join-proof-table
+knitr::kable(join_proof, caption = "Join-safety and weather-audit checks completed before estimation.")
+```
+
+The join is one-to-one: **`r nrow(daily_two_year)` daily ridership rows enter and `r nrow(joined)` leave the weather join**. No dates are multiplied. **`r weather_exclusions` days** are then excluded from the adjusted comparison because the audited precipitation value is missing on those dates.
+
+```{r}
+#| label: integration-estimates
+naive_means <- daily_two_year |>
+  group_by(year) |>
+  summarise(mean_nonmember = mean(nonmember), .groups = "drop")
+
+naive_gap <- naive_means$mean_nonmember[naive_means$year == 2026] -
+  naive_means$mean_nonmember[naive_means$year == 2025]
+
+naive_fit <- lm(nonmember ~ factor(year), data = daily_two_year)
+naive_term <- tidy(naive_fit, conf.int = TRUE) |>
+  filter(term == "factor(year)2026")
+
+adjusted_fit <- lm(
+  nonmember ~ year_factor + tavg_f + precip_in + month_factor + weekday_factor,
+  data = analysis_days
+)
+adjusted_term <- tidy(adjusted_fit, conf.int = TRUE) |>
+  filter(term == "year_factor2026")
+
+adjusted_est <- adjusted_term$estimate[[1]]
+adjusted_low <- adjusted_term$conf.low[[1]]
+adjusted_high <- adjusted_term$conf.high[[1]]
+naive_low <- naive_term$conf.low[[1]]
+naive_high <- naive_term$conf.high[[1]]
+movement <- adjusted_est - naive_gap
+
+estimate_table <- tibble(
+  comparison = c("Raw daily gap", "Weather + calendar adjusted gap"),
+  estimate = c(naive_gap, adjusted_est),
+  conf_low = c(naive_low, adjusted_low),
+  conf_high = c(naive_high, adjusted_high)
+)
+```
+
+```{r}
+#| label: integration-table
+knitr::kable(
+  estimate_table |>
+    mutate(across(c(estimate, conf_low, conf_high), ~ round(.x, 1))),
+  col.names = c("Comparison", "2026 - 2025 trips/day", "95% low", "95% high"),
+  caption = "Naive and adjusted differences in daily non-member trips."
+)
+```
+
+The raw comparable-window mean is **`r round(naive_means$mean_nonmember[naive_means$year == 2025], 1)` non-member trips per day in 2025** and **`r round(naive_means$mean_nonmember[naive_means$year == 2026], 1)` in 2026**, a raw gap of **`r round(naive_gap, 1)` trips per day**.
+
+Holding average temperature, precipitation, month, and weekday structure fixed, **2026 ran `r round(adjusted_est, 1)` more non-member trips per day than 2025**, with a **95% interval from `r round(adjusted_low, 1)` to `r round(adjusted_high, 1)`**. The adjusted difference is **`r round(movement, 1)` trips per day larger** than the naive gap. In this comparison, weather and calendar structure were masking part of the 2026 recovery rather than explaining it away.
+
+The year term must still be interpreted honestly. It bundles everything that changed between the two years after the included weather and calendar controls: the Day Pass era, promotions, service changes, station changes, rider behavior, and other unmeasured differences. It is therefore evidence of a broader 2026 recovery, not proof that the Day Pass alone caused the change.
+
+```{r}
+#| label: integration-figure
+plot_estimates <- estimate_table |>
+  mutate(
+    comparison = factor(
+      comparison,
+      levels = c("Raw daily gap", "Weather + calendar adjusted gap")
+    )
+  )
+
+p_verdict <- ggplot(plot_estimates, aes(x = comparison, y = estimate)) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  geom_errorbar(aes(ymin = conf_low, ymax = conf_high), width = 0.12, linewidth = 0.8) +
+  geom_point(size = 3) +
+  geom_text(
+    aes(label = paste0(round(estimate, 1), " trips/day")),
+    vjust = -1.2,
+    size = 4
+  ) +
+  labs(
+    title = paste0("2026 recovery remains after weather adjustment: +", round(adjusted_est, 1), " trips/day"),
+    subtitle = paste0("Adjusted 95% interval: ", round(adjusted_low, 1), " to ", round(adjusted_high, 1), " trips/day"),
+    x = NULL,
+    y = "Difference in daily non-member trips (2026 - 2025)"
+  ) +
+  theme_board +
+  theme(axis.text.x = element_text(face = "bold"))
+
+p_verdict
+ggsave("../figs/integration_verdict.png", p_verdict, width = 9, height = 5, dpi = 160)
+```
+
+## 4. Capacity uses the docks of each year
+
+The reporting layer derives dock denominators from the capacity history rather than reusing the current station directory for both years. That matters most at the two expanded campus stations and at the new Cumberland Avenue station.
+
+```{r}
+#| label: capacity-table
+capacity_focus <- capacity |>
+  filter(station_id %in% c("S06", "S08", "S25")) |>
+  arrange(station_id, year) |>
+  select(year, station_name, departures, docks, per_dock)
+
+knitr::kable(
+  capacity_focus,
+  col.names = c("Year", "Station", "Departures", "Docks in force", "Departures per dock"),
+  caption = "Capacity scorecard using the dock count in force for each year."
+)
+```
+
+These totals should not be read as equal-length annual comparisons because 2026 ends on October 11. Their purpose here is to show that capacity measures use the correct denominator for the year being described.
+
+## 5. Memo to the General Manager
+
+**Bottom line:** From January 1 through October 11 in both years, 2026 averaged **`r round(adjusted_est, 1)` more non-member trips per day** than 2025 after holding temperature, rain, month, and weekday patterns fixed. The 95% range is **`r round(adjusted_low, 1)` to `r round(adjusted_high, 1)` more trips per day**. I recommend treating the recovery as real operational progress while avoiding the claim that the Day Pass alone caused it.
+
+**Evidence:** The raw difference was **`r round(naive_gap, 1)` more non-member trips per day** in 2026. After accounting for weather and calendar structure, the difference increased by **`r round(movement, 1)` trips per day**. Non-member trips mean casual plus day-pass rides; member rides are not included in this measure. The comparison begins with **`r nrow(daily_two_year)` daily records**, and **`r weather_exclusions` days** are removed because audited precipitation is missing. The wider handover also accounts for **`r format(raw_total, big.mark = ",")` source rows**, with every excluded row assigned a named reason.
+
+**Interpretation:** The weather-adjusted result strengthens, rather than removes, the 2026 recovery. That means differences in temperature, rain, month, and weekday mix were hiding part of the improvement. The year comparison still represents the whole 2026 operating environment, including the Day Pass, promotions, station changes, service conditions, and rider behavior. It does not isolate one program by itself.
+
+**Limitations:** First, 2026 coverage stops on **`r format(cov26_end, "%B %d")`** because the October delivery is incomplete, so this is not a full-year comparison. Second, **`r weather_exclusions` weather days** are omitted because precipitation is missing. Third, there is no untreated comparison group, so other changes between years can still influence the result. Fourth, daily ridership can be affected by events and service disruptions not included here. Fifth, weather is represented only by temperature and precipitation, not every condition riders experience.
+
+**Recommendation:** Keep the Day Pass through the next operating cycle, continue tracking daily non-member trips, and repeat the same comparison when complete year-end data arrive. Use the current result as evidence of recovery, not as a single-program causal claim.
+
+```{r}
+#| label: write-public-index
+#| include: false
+index_text <- c(
+  "# Ride Knox: Two Years, One System",
+  "",
+  "## 2026 verdict",
+  "",
+  paste0(
+    "After adjusting for weather and calendar structure, 2026 ran **",
+    round(adjusted_est, 1),
+    " more non-member trips per day** than 2025 over the shared January 1-October 11 window (95% interval: **",
+    round(adjusted_low, 1), " to ", round(adjusted_high, 1), "**)."
+  ),
+  "",
+  "![Weather-adjusted 2026 recovery](figs/integration_verdict.png)",
+  "",
+  "The raw gap was positive, and the adjusted result is larger. Weather and calendar structure were masking part of the recovery rather than explaining it away. The comparison describes the broader 2026 operating environment; it does not isolate the Day Pass from other changes.",
+  "",
+  "## Read the story",
+  "",
+  "- **[2026 Annual Report](annual_report.html)** - full audit trail, two-year comparison, capacity scorecard, and General Manager memo.",
+  "- **[2025 Analysis Report](2025/report.md)** - the original baseline chapter.",
+  "- **[2026 Mid-year Operations Memo](2026/memo_2026.md)** - the earlier Day Pass and capacity decision.",
+  "- **[Project README](README.md)** - how a successor rebuilds the system with one command.",
+  "",
+  "## Coverage note",
+  "",
+  paste0(
+    "The comparable window ends on ", format(cov26_end, "%B %d, %Y"),
+    " because the October 2026 delivery is truncated. The system records that intake decision and the report uses the same cutoff throughout."
+  )
+)
+writeLines(index_text, "../index.md")
+```
