@@ -1,215 +1,107 @@
-# Ride Knox Ridership and Station Performance: 2025–2026
+# Ride Knox Final Handover
 
-A reproducible analysis of Ride Knox ridership patterns, station activity, and station-capacity pressure.
-![2026 Ridership Recovery](2026/charts/recovery_vs_2025.png)
+This repository is the handover for Ride Knox's 2025-2026 analytical system. A successor can place the raw course files in `data/`, run one command, and rebuild the intake receipts, two-year warehouse, reconciliation ledger, reporting extracts, annual report, figures, and public-page content.
 
-## Key Finding
+![System architecture](architecture.png)
 
-Ride Knox station demand is uneven: busy campus stations face the greatest capacity pressure, while Bearden and Sequoyah Hills show comparatively low use.
+## One-command rebuild
 
-![Station Pressure: 2025 vs. 2026](2025/charts/station_pressure_yoy.png)
+### Prerequisites
 
-## Overview
+Install or have available:
 
-This project addresses two operational questions for Ride Knox:
+- Git and Bash
+- Python 3
+- `sqlite3`
+- Quarto
+- R with `readr`, `dplyr`, `ggplot2`, `lubridate`, and `broom`
 
-1. What patterns may help explain the decline in ridership?
-2. Which stations appear to have the greatest need for additional capacity?
+Create the Python environment once:
 
-The analysis uses trip-level data together with station information to examine ridership patterns and compare station activity relative to available dock capacity.
+```bash
+python -m venv .venv
+source .venv/Scripts/activate
+pip install -r requirements.txt
+```
 
-## 2025 Analysis
+On macOS/Linux, activate with `source .venv/bin/activate` instead.
 
-The 2025 work provides the starting point for understanding Ride Knox ridership and how stations were being used. It looks at rider activity and station pressure to show where demand was concentrated and where capacity issues may have been developing.
+### Raw files
 
-The 2025 notebook and report are stored in the `2025/` folder.
-
-## Interpretation Notes
-
-The 2026 results should be viewed as an early-year comparison rather than a complete annual trend. Since the 2026 trip data cover only the first half of the year, seasonal patterns may affect direct comparisons with the full 2025 period.
-
-Changes in station pressure should also be considered alongside changes in dock capacity. A lower pressure value may reflect added station capacity as well as changes in ridership.
-
-## 2026 Analysis
-
-The 2026 analysis builds on the 2025 results by looking at the first half of 2026 and comparing recent ridership and station activity with the earlier baseline.
-
-The results show that casual ridership was still below the previous year, while the picture improved when day-pass riders were included. The analysis also shows that station pressure changed at some locations after dock capacity was expanded.
-
-The 2026 notebook, memo, and charts are stored in the `2026/` folder.
-
-## Data
-
-The raw data files are intentionally excluded from this GitHub repository and remain ignored by Git.
-
-To reproduce the 2025 and 2026 analyses, obtain the following four course data files:
-
-- `trips_2025.csv`
-- `stations.xlsx`
-- `trips_2026_h1.csv`
-- `stations_2026.xlsx`
-
-Place all four files in the repository root:
+Create a local `data/` folder and place these files inside it:
 
 ```text
-ride-knox-analysis/
+data/
 ├── trips_2025.csv
-├── stations.xlsx
 ├── trips_2026_h1.csv
-├── stations_2026.xlsx
-├── 2025/
-└── 2026/
+├── trips_2026_07.csv
+├── trips_2026_08.csv
+├── trips_2026_09.csv
+├── trips_2026_09_resend.csv
+├── trips_2026_10.csv
+├── weather_knoxville_daily.csv
+└── stations_2026.xlsx
 ```
 
-The raw data files should remain local and should not be committed to GitHub.
+`stations.xlsx` may also remain local for earlier course work, but the final handover derives the capacity history from `stations_2026.xlsx` plus the documented dock-history rules.
 
-### `trips_2025.csv`
+Raw files are never edited and must not be committed.
 
-| Column | Description |
-|---|---|
-| `trip_id` | Unique identifier for each trip |
-| `start_time` | Date and time the trip began |
-| `end_time` | Date and time the trip ended |
-| `start_station_id` | Identifier of the station where the trip began |
-| `start_station_name` | Name of the station where the trip began |
-| `end_station_id` | Identifier of the station where the trip ended |
-| `rider_type` | Rider category associated with the trip |
-| `bike_type` | Type of bicycle used |
-
-### `stations.xlsx`
-
-| Column | Description |
-|---|---|
-| `station_id` | Unique station identifier |
-| `station_name` | Station name |
-| `neighborhood` | Neighborhood where the station is located |
-| `latitude` | Station latitude |
-| `longitude` | Station longitude |
-| `docks` | Number of docks available at the station |
-| `year_installed` | Year the station was installed |
-
-## How to Run
-
-1. Clone or download this repository.
-
-2. Obtain the four raw course data files:
-   - `trips_2025.csv`
-   - `stations.xlsx`
-   - `trips_2026_h1.csv`
-   - `stations_2026.xlsx`
-
-3. Place all four raw data files in the repository root folder.
-
-4. Open PowerShell or the VS Code terminal in the repository root.
-
-5. Install the required Python packages by running:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-6. Start Jupyter Notebook by running:
-
-   ```bash
-   jupyter notebook
-   ```
-
-7. To reproduce the 2025 analysis:
-   - open `2025/analysis.ipynb`
-   - run the notebook from top to bottom
-
-8. To reproduce the 2026 analysis:
-   - open `2026/analysis_2026.ipynb`
-   - run the notebook from top to bottom
-
-Both notebooks use relative paths to read the raw data files from the repository root. The raw data files are intentionally excluded from GitHub and should remain local.
-
-## Key Findings
-
-The station-capacity analysis shows that activity is not evenly distributed across the Ride Knox network. Busy campus stations experience substantially greater trips-per-dock pressure, while stations in Bearden and Sequoyah Hills have comparatively low activity. This suggests that future capacity decisions should consider station utilization rather than simply adding docks uniformly across the system.
-
-![Ride Knox station capacity pressure](2025/charts/station_pressure_yoy.png)
-
-## Limitations
-
-- The analysis covers only one year of trip data, so it cannot establish long-term trends by itself.
-- The results are observational and should not be interpreted as proof that any single factor caused the observed ridership patterns.
-- Trip-cleaning rules affect the final sample. Trips shorter than 2 minutes and trips longer than 24 hours were excluded as likely data-quality problems.
-- Missing or incomplete station information may affect some station-level calculations.
-
-## Repository Structure
-
-```text
-ride-knox-analysis/
-├── 2025/
-│   ├── analysis.ipynb
-│   ├── report.md
-│   └── charts/
-│       ├── nonmember_recovery.png
-│       └── station_pressure_yoy.png
-├── 2026/
-│   ├── analysis_2026.ipynb
-│   ├── memo_2026.md
-│   └── charts/
-│       ├── daypass_vs_others.png
-│       ├── recovery_vs_2025.png
-│       └── station_pressure_change.png
-├── screenshots/
-├── README.md
-├── requirements.txt
-├── _config.yml
-├── PROJECT-LOG.md
-├── COLLAB-LOG.md
-├── WORKLOG.md
-└── .gitignore
-```
-
-## Monday briefing
-
-This repository includes an automated Ride Knox station-pressure briefing.
-
-### Run in order
+### Run
 
 ```bash
-python -m venv .venv
-source .venv/Scripts/activate
-pip install -r requirements.txt
-cp .env.example .env
-# Fill RIDE_KNOX_API_KEY locally; never commit .env.
-./pipeline/run_briefing.sh 2025
+./build_all.sh
 ```
 
-### Inputs
-
-- `trips_2025.csv` or `trips_<YEAR>.csv`
-- `stations.xlsx`
-- `ride_knox.db`
-- local `RIDE_KNOX_API_KEY`
-- optional `RIDE_KNOX_DATA`, `RIDE_KNOX_DB`, and `RIDE_KNOX_MAX_DUPES`
-
-### Outputs
-
-- `out/stations.csv`
-- `out/dep_<STATION>.txt`
-- `out/station_pressure.csv`
-- `pipeline/latest_summary.txt`
-- `logs/briefing.log`
-- `logs/cron.log`
-
-**Safe to re-run:** Yes. Generated outputs are overwritten deterministically, and an unchanged summary is treated as a normal no-op.
-
-**Fails if:** required inputs/configuration are missing, the API key is unset, duplicate rows exceed the threshold, station conversion/counting fails, SQL fails, or the summary CSV is empty/invalid.
-
-## Monthly intake
-
-The fall Ride Knox intake workflow audits new monthly vendor deliveries, separates usable and unusable files, loads accepted trips without double-counting, produces the fall reporting tables, and records a reproducible summary.
-
-### Run in order
+Optional path overrides:
 
 ```bash
-python -m venv .venv
-source .venv/Scripts/activate
-pip install -r requirements.txt
-cp .env.example .env
-# Add the local RIDE_KNOX_API_KEY value to .env; never commit .env.
-./pipeline/run_intake.sh
+DATA_DIR=/path/to/raw/files RIDE_KNOX_DB=/path/to/ride_knox_wh.db ./build_all.sh
+```
+
+## Stage table
+
+| Stage | Tool | Reads | Writes |
+|---|---|---|---|
+| 1. Working-copy intake | Bash | `data/trips_*.csv` | `incoming/` |
+| 2. Gate + policy | Bash | `incoming/` | `accepted/`, `quarantine/`, `out/gate_receipts.csv` |
+| 3. Repair/staging | Bash | `accepted/` | `staging/`, `out/prepare_receipts.csv` |
+| 4. Warehouse load | Python | staged trips, stations, weather | `ride_knox_wh.db`, `out/system_reconciliation.csv` |
+| 5. Reporting layer | SQL | warehouse | views + `out/*.csv` extracts |
+| 6. Analysis/report | R + Quarto | `out/*.csv` only | `report/annual_report.html`, `figs/*.png`, `index.md` |
+| 7. Release | Bash + GitHub Pages | rendered report/site assets | `annual_report.html` + published site |
+
+## Intake policy
+
+The gate applies the same checks to all seven trip deliveries. The header-broken September file remains quarantined because the corrected September resend is available. The short October fragment is released only through `pipeline/release_quarantine.sh`; structurally complete rows are retained, the severed final row is counted, and the report limits year-over-year comparisons to the shared January 1-October 11 window.
+
+## Receipts and checks
+
+After a successful run, inspect:
+
+- `out/gate_receipts.csv` - accept/quarantine decisions
+- `out/prepare_receipts.csv` - repaired and structurally dropped rows
+- `out/system_reconciliation.csv` - every source row assigned to a loaded or named excluded outcome
+- `out/build_summary.txt` - end-of-run summary
+- `annual_report.html` - committed release report
+- `figs/integration_verdict.png` - lead public figure
+
+With the documented policy, the expected anchors are 484,845 warehouse trips, 235,108 trips from 2026, 481,770 reportable trips, and system closure of 515,536 raw rows = 485,540 loaded + 29,996 excluded.
+
+## Re-run behavior
+
+**Safe to re-run:** Yes. `build_all.sh` deletes and rebuilds only generated working products, leaves raw files unchanged, recreates the warehouse and extracts from scratch, and overwrites the release report and figures from the same inputs.
+
+**Fails if:** a required raw file is missing; Python, SQLite, Quarto, or the required R packages are unavailable; a stage returns an error; row reconciliation fails; the reporting extracts cannot be produced; or the annual report cannot be rebuilt from `out/`.
+
+The intended broken-handoff behavior is deliberate: deleting `out/` and the warehouse and then trying to render `report/annual_report.qmd` alone must fail. Running `./build_all.sh` restores the complete chain.
+
+## Public outputs
+
+- [2026 Annual Report](annual_report.html)
+- [2025 Analysis Report](2025/report.md)
+- [2026 Mid-year Operations Memo](2026/memo_2026.md)
+- [Tool-selection defense](TOOL-DEFENSE.md)
+- [Reflection and AI disclosure](REFLECTION.md)
+
+The system design and the deliberate generated-release exception are documented in `TOOL-DEFENSE.md`.

@@ -1,31 +1,30 @@
--- DATA 501 SQL Module Project
--- views.sql
+-- views.sql -- the shared definition of a trip that belongs in reports.
+-- One filter, one place, every downstream number -- instead of five analysts'
+-- five opinions. Thresholds: the house window (1 minute to 24 hours), plus a
+-- recorded start time (you cannot put an undated trip in a month). Rows the
+-- view excludes are still IN the warehouse -- stored, countable, auditable.
 
--- A reportable trip is complete enough for board reporting and has a duration
--- from 1 minute through 6 hours. Positive durations outside this range remain
--- stored and auditable but are flagged out of this shared view.
--- >>> REPORTING_TRIPS
-CREATE VIEW reporting_trips AS
-SELECT
-    t.trip_id,
-    t.start_time,
-    t.end_time,
-    t.start_station_id,
-    t.end_station_id,
-    t.rider_type,
-    t.bike_type,
-    ROUND((julianday(t.end_time) - julianday(t.start_time)) * 1440.0, 1) AS duration_min,
-    (
-        SELECT c.docks
-        FROM station_capacity_history AS c
-        WHERE c.station_id = t.start_station_id
-          AND c.effective_date <= date(t.start_time)
-        ORDER BY c.effective_date DESC
-        LIMIT 1
-    ) AS start_docks
-FROM trips AS t
-WHERE t.end_time IS NOT NULL
-  AND t.end_station_id IS NOT NULL
-  AND t.duration_flag = 0
-  AND (julianday(t.end_time) - julianday(t.start_time)) * 1440.0 BETWEEN 1 AND 360;
--- <<< REPORTING_TRIPS
+DROP VIEW IF EXISTS trips_reportable;
+CREATE VIEW trips_reportable AS
+SELECT t.*,
+       DATE(t.start_time)                                        AS ride_date,
+       SUBSTR(t.start_time, 1, 7)                                AS ride_month,
+       SUBSTR(t.start_time, 1, 4)                                AS ride_year,
+       (julianday(t.end_time) - julianday(t.start_time)) * 1440  AS duration_min
+FROM trips t
+WHERE t.start_time IS NOT NULL
+  AND (t.end_time IS NULL   -- a trip with no recorded end still HAPPENED;
+                            -- it counts, it just carries no duration
+       OR ((julianday(t.end_time) - julianday(t.start_time)) * 1440 >= 1
+           AND (julianday(t.end_time) - julianday(t.start_time)) * 1440 <= 1440));
+
+-- Year-correct dock counts: for a given year, the docks in force at that
+-- year's mid-season (Jul 1). This is what dock_history exists for.
+DROP VIEW IF EXISTS docks_by_year;
+CREATE VIEW docks_by_year AS
+SELECT y.yr, dh.station_id, dh.docks
+FROM (SELECT '2025' AS yr UNION ALL SELECT '2026') y
+JOIN dock_history dh
+  ON dh.valid_from = (SELECT MAX(valid_from) FROM dock_history d2
+                       WHERE d2.station_id = dh.station_id
+                         AND d2.valid_from <= y.yr || '-07-01');

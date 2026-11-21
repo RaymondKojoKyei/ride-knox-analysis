@@ -1,38 +1,56 @@
-trips_2025.csv
-stations.xlsx
-trips_2026_h1.csv
-stations_2026.xlsx
-trips_2026_07.csv
-ride_knox_api_token.txt
-.ipynb_checkpoints/
-scratch/
-ride_knox.db
-ride_knox_v2.db
-ride_knox_work.db
-.idea/
-out/
-logs/
-.venv/
+# Secrets and local environment
 .env
+.env.*
+!.env.example
+.venv/
+venv/
+.idea/
+.ipynb_checkpoints/
+.Rhistory
 
-# Bash Module Project generated/local files
+# Raw course data
+/data/
+trips_*.csv
+stations*.xlsx
+weather_knoxville_daily.csv
+ride_knox_api_token.txt
+
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Generated working folders and receipts
 incoming/
 accepted/
 quarantine/
 staging/
-ride_knox_fall.db
-trips_*.csv
-stations*.xlsx
-figs/
+out/
+logs/
+scratch/
 
-# Local R / Assignment 12 working files
-.Rhistory
+# Earlier generated module artifacts
+price_effect.html
+price_effect_files/
 Assignment12_Submission/
 Assignment12_Submission.zip
 Bash_Module_Project/
 week 12 R studio/
-ANALYSIS-LOG_FINAL.md
 week 12 R submissions for data 501/
 
-price_effect.html
-price_effect_files/
+# Final-project release exception: Pages serves these generated artifacts.
+# The exception and its cost are defended in TOOL-DEFENSE.md.
+report/annual_report.html
+!annual_report.html
+figs/*
+!figs/integration_verdict.png
+!figs/two_year_nonmember.png
+
+# Never version the instructor handover scratch folder or copied secrets
+handover/
+
+# Local course handoff / duplicate working folders
+module 13 assignment/
+DATA 501 FINAL PROJECT/
+ANALYSIS-LOG_FINAL.md
+report/annual_report.html

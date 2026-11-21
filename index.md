@@ -1,28 +1,20 @@
-# Ride Knox 2025-2026 Public Analysis
+# Ride Knox: Two Years, One System
 
-## 2026 Verdict
+## 2026 verdict
 
-The Day Pass and campus capacity investments are showing positive results, but one station still needs attention.
+After adjusting for weather and calendar structure, 2026 ran **39.6 more non-member trips per day** than 2025 over the shared January 1-October 11 window (95% interval: **30.1 to 49.1**).
 
-Including Day Pass riders, non-member trips were 12% above the June 2025 level. At the same time, pressure at Hodges Library and the Student Union fell by about 31% after capacity changes.
+![Weather-adjusted 2026 recovery](figs/integration_verdict.png)
 
-![2026 Ridership Recovery](2026/charts/recovery_vs_2025.png)
+The raw gap was positive, and the adjusted result is larger. Weather and calendar structure were masking part of the recovery rather than explaining it away. The comparison describes the broader 2026 operating environment; it does not isolate the Day Pass from other changes.
 
-## What changed in 2026
+## Read the story
 
-- Casual ridership alone remained below the June 2025 level.
-- Including Day Pass riders, non-member trips recovered above the earlier baseline.
-- Member trips increased by about 10% each month.
-- Station pressure fell at Hodges Library and the Student Union after dock expansion.
-- Sequoyah Hills remained at the system low and may need further operational attention.
+- **[2026 Annual Report](annual_report.html)** - full audit trail, two-year comparison, capacity scorecard, and General Manager memo.
+- **[2025 Analysis Report](2025/report.md)** - the original baseline chapter.
+- **[2026 Mid-year Operations Memo](2026/memo_2026.md)** - the earlier Day Pass and capacity decision.
+- **[Project README](README.md)** - how a successor rebuilds the system with one command.
 
-## Read the analysis
+## Coverage note
 
-- [2025 Analysis Report](2025/report.md)
-- [2026 Operations Memo](2026/memo_2026.md)
-- [2026 Public Release Note](RELEASE-NOTE.md)
-- [Project README](README.md)
-
-## Important Caveat
-
-The 2026 results cover only the first six months of the year. Seasonal conditions, weather, novelty effects, and other uncontrolled factors may influence comparisons with 2025.
+The comparable window ends on October 11, 2026 because the October 2026 delivery is truncated. The system records that intake decision and the report uses the same cutoff throughout.
